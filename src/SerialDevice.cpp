@@ -114,13 +114,20 @@ unsigned char *SerialDevice::sendAndReceive(unsigned char *sendBuffer, unsigned 
 
     unsigned char *receivedBuffer = new unsigned char[MAX_BUFFER];
     unsigned int pointer = 0;
-
     do {
-        status = receive(&receivedBuffer[pointer], sizeof(unsigned char));
+        status = receive(&receivedBuffer[pointer], (MAX_BUFFER-pointer));
+        if(status > 0){
+            pointer += status;
+        }
+        /*status = receive(&receivedBuffer[pointer], sizeof(unsigned char));
+        printf("TTY Read status:%d\n",status);
         if (status == 1) {
             pointer++;
-        }
-    } while (status == 1);
+        }*/
+
+    }
+    while ((status > 0) && (pointer < MAX_BUFFER));
+    //while (status == 1);
 
     *receivedLength = pointer;
 
@@ -131,7 +138,7 @@ int SerialDevice::setInterfaceAttribs(int fd, int speed, int parity)
 {
     memset (&tty, 0, sizeof(tty));
     if (tcgetattr(fd, &tty) != 0) {
-        printf("Error %s from tcgetattr: %s.\n", errno, strerror(errno));
+        printf("Error %d from tcgetattr: %s\n", errno, strerror(errno));
         return -1;
     }
 
@@ -144,7 +151,7 @@ int SerialDevice::setInterfaceAttribs(int fd, int speed, int parity)
     tty.c_lflag = 0;            // no signaling char, no echo, no canonical processing
     tty.c_oflag = 0;            // no remapping, no delays
     tty.c_cc[VMIN]  = 0;        // read doesn't block
-    tty.c_cc[VTIME] = 5;        // 0.5 seconds read timeout
+    tty.c_cc[VTIME] = 10;        // 0.5 seconds read timeout
 
     tty.c_iflag &= ~(IXON | IXOFF | IXANY); // shut off xon/xoff ctrl
 
@@ -154,7 +161,7 @@ int SerialDevice::setInterfaceAttribs(int fd, int speed, int parity)
     tty.c_cflag &= ~CRTSCTS;
 
     if (tcsetattr (fd, TCSANOW, &tty) != 0) {
-        printf("Error %d from tcsetattr: %s.\n", errno, strerror(errno));
+        printf("Error %d from tcsetattr: %s\n", errno, strerror(errno));
         return -1;
     }
 
@@ -166,7 +173,7 @@ int SerialDevice::setBlocking(int fd, bool shouldBlock)
     struct termios tty;
     memset (&tty, 0, sizeof tty);
     if (tcgetattr (fd, &tty) != 0) {
-        printf("Error %d from tcgetattr: %s.\n", errno, strerror(errno));
+        printf("Error %d from tcgetattr: %s\n", errno, strerror(errno));
 
         return -1;
     }
@@ -175,7 +182,7 @@ int SerialDevice::setBlocking(int fd, bool shouldBlock)
     tty.c_cc[VTIME] = 5;            // 0.5 seconds read timeout
 
     if (tcsetattr (fd, TCSANOW, &tty) != 0) {
-        printf("Error %d from tcsetattr\: %sn", errno, strerror(errno));
+        printf("Error %d from tcsetattr: %s\n", errno, strerror(errno));
 
         return -1;
     }

@@ -10,6 +10,7 @@
 RFIDDevice::RFIDDevice(SerialDevice *device)
 {
     serialDevice = device;
+    this->id = 0;
 }
 
 /*!
@@ -28,11 +29,11 @@ RFIDDevice::~RFIDDevice()
  * \param rfid the RFID to be parsed.
  * \return the RFID code in string format.
  */
-char *RFIDDevice::parseRFID(RFID rfid)
+char *RFIDDevice::parseRFID(RFID *rfid)
 {
     char *str = new char[1024]();
-    for (short i=0; i<rfid.length; i++){
-        sprintf(str,"%s%02x:",str,rfid.rfid[i]);
+    for (short i=0; i<rfid->length; i++){
+        sprintf(str,"%s%02x:",str,rfid->rfid[i]);
     }
     str[strlen(str)-1] = '\0';
     return str;
@@ -46,18 +47,45 @@ char *RFIDDevice::parseRFID(RFID rfid)
  * \param message the message with all the commands to send to the reader.
  * \return the message sent from the reader with the response.
  */
-RFIDMessage *RFIDDevice::sendAndRecieve(RFIDMessage *message)
+unique_ptr<RFIDMessage> RFIDDevice::sendAndRecieve(RFIDMessage *message)
 {
     unsigned char *send = message->getBuffer();
     unsigned int sendLength = message->getLength();
-    unsigned int receivedLength;
+    
+    unsigned int bytesRead;
+    bool messagePending = true;
+    unsigned int pointer = 0;
+    unsigned char header[10];
+    unsigned char *received;
+    unsigned short receivedLength;
+    RFIDMessage *tmpMessage;
 
-    unsigned char *received = serialDevice->sendAndReceive(send, sendLength, &receivedLength);
-
-    if (receivedLength < 10){
-        return NULL;
+    serialDevice->send(send, sendLength);
+    
+    while(messagePending){
+        if(pointer < 10){
+            bytesRead = serialDevice->receive(&(header[pointer]), (10-pointer));
+            pointer += bytesRead;
+            if(pointer == 10){
+                tmpMessage = new RFIDMessage(header,pointer);
+                receivedLength = tmpMessage->getLength();
+                received = new unsigned char[receivedLength];
+                memcpy(received,header,pointer);
+                delete tmpMessage;
+            }
+        }
+        else{
+            bytesRead = serialDevice->receive(&(received[pointer]),(receivedLength - pointer));
+            pointer += bytesRead;
+            if(pointer >= receivedLength){
+                messagePending = false;
+            }
+        }
     }
-    return new RFIDMessage(received,receivedLength);
+    unique_ptr<RFIDMessage> msgOut = make_unique<RFIDMessage>(received, receivedLength);
+    delete[] received;
+
+    return move(msgOut);    
 }
 
 /*!
@@ -70,14 +98,12 @@ RFIDMessage *RFIDDevice::sendAndRecieve(RFIDMessage *message)
  * \param id message id.
  * \return a message with the status of the antenna.
  */
-RFIDMessage *RFIDDevice::getAntennaStatus(unsigned char *source, unsigned short len, unsigned short id)
+unique_ptr<RFIDMessage> RFIDDevice::getAntennaStatus(unsigned char *source, unsigned short len)
 {
-    RFIDMessage *msgCheckAntenna = new RFIDMessage(id);
-    msgCheckAntenna->addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::CHECK_READ_POINT_STATUS);
-    msgCheckAntenna->addCommand(RFIDAttributeTypes::READ_POINT_NAME, source, len);
-    RFIDMessage *response = sendAndRecieve(msgCheckAntenna);
-    delete(msgCheckAntenna);
-    return response;
+    RFIDMessage msgCheckAntenna(getNextId());
+    msgCheckAntenna.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::CHECK_READ_POINT_STATUS);
+    msgCheckAntenna.addCommand(RFIDAttributeTypes::READ_POINT_NAME, source, len);
+    return sendAndRecieve(&msgCheckAntenna);
 }
 
 /*!
@@ -88,13 +114,11 @@ RFIDMessage *RFIDDevice::getAntennaStatus(unsigned char *source, unsigned short 
  * \param id message id.
  * \return a message with the acqual value.
  */
-RFIDMessage *RFIDDevice::getPower(unsigned short id)
+unique_ptr<RFIDMessage> RFIDDevice::getPower()
 {
-    RFIDMessage *msgGetPower = new RFIDMessage(id);
-    msgGetPower->addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_POWER);
-    RFIDMessage *response = sendAndRecieve(msgGetPower);
-    delete(msgGetPower);
-    return response;
+    RFIDMessage msgGetPower(getNextId());
+    msgGetPower.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_POWER);
+    return sendAndRecieve(&msgGetPower);
 }
 
 /*!
@@ -106,14 +130,12 @@ RFIDMessage *RFIDDevice::getPower(unsigned short id)
  * \param id message id.
  * \return a message with the success status.
  */
-RFIDMessage *RFIDDevice::setPower(unsigned int powerLevel, unsigned short id)
+unique_ptr<RFIDMessage> RFIDDevice::setPower(unsigned int powerLevel)
 {
-    RFIDMessage *msgSetPower = new RFIDMessage(id);
-    msgSetPower->addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_POWER);
-    msgSetPower->addCommand(RFIDAttributeTypes::POWER_SET, powerLevel);
-    RFIDMessage *response = sendAndRecieve(msgSetPower);
-    delete(msgSetPower);
-    return response;
+    RFIDMessage msgSetPower(getNextId());
+    msgSetPower.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_POWER);
+    msgSetPower.addCommand(RFIDAttributeTypes::POWER_SET, powerLevel);
+    return sendAndRecieve(&msgSetPower);
 }
 
 /*!
@@ -125,14 +147,12 @@ RFIDMessage *RFIDDevice::setPower(unsigned int powerLevel, unsigned short id)
  * \param id message id.
  * \return a message with the success status.
  */
-RFIDMessage *RFIDDevice::setProtocol(unsigned int protocol, unsigned short id)
+unique_ptr<RFIDMessage> RFIDDevice::setProtocol(unsigned int protocol)
 {
-    RFIDMessage *msgSetProtocol = new RFIDMessage(id);
-    msgSetProtocol->addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_PROTOCOL);
-    msgSetProtocol->addCommand(RFIDAttributeTypes::PROTOCOL, protocol);
-    RFIDMessage *response = sendAndRecieve(msgSetProtocol);
-    delete(msgSetProtocol);
-    return response;
+    RFIDMessage msgSetProtocol(getNextId());
+    msgSetProtocol.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_PROTOCOL);
+    msgSetProtocol.addCommand(RFIDAttributeTypes::PROTOCOL, protocol);
+    return sendAndRecieve(&msgSetProtocol);
 }
 
 /*!
@@ -143,13 +163,11 @@ RFIDMessage *RFIDDevice::setProtocol(unsigned int protocol, unsigned short id)
  * \param id message id.
  * \return a message with the protocol name.
  */
-RFIDMessage *RFIDDevice::getProtocol(unsigned short id)
+unique_ptr<RFIDMessage> RFIDDevice::getProtocol()
 {
-    RFIDMessage *msgGetProtocol = new RFIDMessage(id);
-    msgGetProtocol->addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_PROTOCOL);
-    RFIDMessage *response = sendAndRecieve(msgGetProtocol);
-    delete(msgGetProtocol);
-    return response;
+    RFIDMessage msgGetProtocol(getNextId());
+    msgGetProtocol.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_PROTOCOL);
+    return sendAndRecieve(&msgGetProtocol);
 }
 
 /*!
@@ -162,16 +180,28 @@ RFIDMessage *RFIDDevice::getProtocol(unsigned short id)
  * \param id message id.
  * \return a message with all the founds RFID ids.
  */
-RFIDMessage *RFIDDevice::inventory(unsigned char *source, unsigned short len, unsigned short id)
+unique_ptr<RFIDMessage> RFIDDevice::inventory(unsigned char *source, unsigned short len)
 {
-    RFIDMessage *msgInventory = new RFIDMessage(id);
-    RFIDMessage *msgIn;
-    msgInventory->addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::INVENTORY_TAG);
-    msgInventory->addCommand(RFIDAttributeTypes::SOURCE_NAME, source, len);
+    RFIDMessage msgInventory(getNextId());
+    msgInventory.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::INVENTORY_TAG);
+    msgInventory.addCommand(RFIDAttributeTypes::SOURCE_NAME, source, len);
+    return sendAndRecieve(&msgInventory);
+}
 
-    msgIn = sendAndRecieve(msgInventory);
+unique_ptr<RFIDMessage> RFIDDevice::inventory(unsigned char *source, unsigned short source_len, unsigned char *mask, unsigned short mask_len, unsigned short mask_pos, unsigned short flags)
+{
+    RFIDMessage msgInventory(getNextId());
+    msgInventory.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::INVENTORY_TAG);
+    msgInventory.addCommand(RFIDAttributeTypes::SOURCE_NAME, source, source_len);
+    msgInventory.addCommand(RFIDAttributeTypes::LENGTH, mask_len);
+    msgInventory.addCommand(RFIDAttributeTypes::TAG_ID_MASK, mask, mask_len);
+    msgInventory.addCommand(RFIDAttributeTypes::TAG_ID_MASK_POS, mask_pos);
+    msgInventory.addCommand(RFIDAttributeTypes::INVENTORY_FLAGS, flags);
+    return sendAndRecieve(&msgInventory);
+}
 
-    delete(msgInventory);
-
-    return msgIn;
+unsigned short RFIDDevice::getNextId()
+{
+    this->id++;
+    return this->id;
 }

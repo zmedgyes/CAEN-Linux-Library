@@ -24,6 +24,7 @@ public:
     static const unsigned short TAG_ID_LEN        = 0x000F;
     static const unsigned short TIME_STAMP        = 0x0010;
     static const unsigned short TAG_ID            = 0x0011;
+    static const unsigned short TAG_ID_MASK       = 0x0011;
     static const unsigned short TAG_TYPE          = 0x0012;
     static const unsigned short CHANNEL_NAME      = 0x001E;
     static const unsigned short CHANNEL_ADDRESS   = 0x001F;
@@ -31,7 +32,9 @@ public:
     static const unsigned short TRIGGER_TYPE      = 0x0021;
     static const unsigned short READ_POINT_NAME   = 0x0022;
     static const unsigned short TAG_VALUE         = 0x004D;
+    static const unsigned short TAG_TID           = 0x004D;
     static const unsigned short TAG_ADDRESS       = 0x004E;
+    static const unsigned short TAG_ID_MASK_POS   = 0x004E;
     // static const unsigned short RESERVED          = 0x004F;
     static const unsigned short LENGTH            = 0x0050;
     static const unsigned short BIT_RATE          = 0x0051;
@@ -41,7 +44,7 @@ public:
     static const unsigned short READ_POINT_STATUS = 0x0056;
     static const unsigned short BOOLEAN           = 0x0057;
     static const unsigned short IP_ADDRESS        = 0x0058;
-    static const unsigned short IP_NETMASK         = 0x0059;
+    static const unsigned short IP_NETMASK        = 0x0059;
     static const unsigned short IP_GATEWAY        = 0x005A;
     static const unsigned short DESB_ENABLE       = 0x005B;
     static const unsigned short FW_RELEASE        = 0x005C;
@@ -56,8 +59,9 @@ public:
     static const unsigned short DATE_TIME         = 0x0065;
     static const unsigned short SEL_UNSE_OP       = 0x0066;
     static const unsigned short BITMASK           = 0x0067;
+    static const unsigned short INVENTORY_FLAGS   = 0x0067;
     //static const unsigned short RESERVED          = 0x0068;
-    static const unsigned short IO_REGISTER       = 0x0069;
+    static const unsigned short IO_REGISTER = 0x0069;
     static const unsigned short CONFIG_PARAMETER  = 0x006A;
     static const unsigned short CONFIG_VALUE      = 0x006B;
     static const unsigned short NO_OF_TRIGGERS    = 0x006C;

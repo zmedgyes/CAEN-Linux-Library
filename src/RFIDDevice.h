@@ -12,6 +12,8 @@
 #include "RFIDMessage.h"
 #include "SerialDevice.h"
 
+#include <memory>
+
 using namespace std;
 
 /*!
@@ -30,18 +32,21 @@ public:
     RFIDDevice(SerialDevice *device);
     ~RFIDDevice();
 
-    static char *parseRFID(RFID rfid);
+    static char *parseRFID(RFID *rfid);
 
-    RFIDMessage *sendAndRecieve(RFIDMessage *message);
+    unique_ptr<RFIDMessage> sendAndRecieve(RFIDMessage *message);
 
-    RFIDMessage *getAntennaStatus(unsigned char *source, unsigned short len, unsigned short id=0x0000);
-    RFIDMessage *getPower(unsigned short id=0x0000);
-    RFIDMessage *setPower(unsigned int powerLevel, unsigned short id=0x0000);
-    RFIDMessage *setProtocol(unsigned int protocol, unsigned short id=0x0000);
-    RFIDMessage *getProtocol(unsigned short id=0x0000);
-    RFIDMessage *inventory(unsigned char *source, unsigned short len, unsigned short id=0x0000);
+    unique_ptr<RFIDMessage> getAntennaStatus(unsigned char *source, unsigned short len);
+    unique_ptr<RFIDMessage> getPower();
+    unique_ptr<RFIDMessage> setPower(unsigned int powerLevel);
+    unique_ptr<RFIDMessage> setProtocol(unsigned int protocol);
+    unique_ptr<RFIDMessage> getProtocol();
+    unique_ptr<RFIDMessage> inventory(unsigned char *source, unsigned short len);
+    unique_ptr<RFIDMessage> inventory(unsigned char *source, unsigned short source_len, unsigned char *mask, unsigned short mask_len, unsigned short mask_pos, unsigned short flags);
 
 private:
+    unsigned short id;
+    unsigned short getNextId();
     SerialDevice *serialDevice;
 };
 

@@ -1,18 +1,28 @@
 #include "RFIDMessage.h"
 
+RFIDMessage::RFIDMessage()
+{
+    version = 0;
+    messageId = 0;
+    vendor = 0;
+    length = 10; // 10 header
+    valid = false;
+}
+
 /*!
  * \fn RFIDMessage::RFIDMessage
  *
  * Constructs a void command message (version = 0x8001) wich need to be populated with the method RFIDMessage::addCommand.
  *
- * \param id id of the message, default is 0x00.
+ * \param id id of the message
  */
-RFIDMessage::RFIDMessage(unsigned short id = 0x00)
+RFIDMessage::RFIDMessage(unsigned short id)
 {
     version = 0x8001;
     messageId = id;
     vendor = 0x00005358;
     length = 10;            // 10 header
+    valid = true;
 }
 
 /*!
@@ -30,22 +40,19 @@ RFIDMessage::RFIDMessage(unsigned char *buffer, unsigned int messageLength)
     messageId = bufferToShort(&buffer[MESSAGE_ID]);
     vendor = bufferToInt(&buffer[VENDOR_ID]);
     length = bufferToShort(&buffer[MSG_LENGTH]);
+    valid = true;
 
     unsigned int position = 10;
 
     // process the bodies
-    MessageRFIDBody temp;
-
-    do {
-        temp.reserved = bufferToShort(&buffer[position]);
-        temp.length = bufferToShort(&buffer[position +2]);
-        temp.attributeType = bufferToShort(&buffer[position +4]);
-        temp.attributeValue = new unsigned char[(temp.length -6)]();
-        memcpy(temp.attributeValue, &buffer[position +6],(temp.length -6));
-        position += temp.length;
-
-        body.push_back(temp);
-    } while (position < messageLength);
+    
+    while (position < messageLength){
+        short reserved = bufferToShort(&buffer[position]);
+        short length = bufferToShort(&buffer[position +2]);
+        short attributeType = bufferToShort(&buffer[position +4]);
+        body.push_back(make_unique<MessageRFIDBody>(reserved, attributeType, &buffer[position + 6], length));
+        position += length;
+    }
 }
 
 /*!
@@ -54,7 +61,8 @@ RFIDMessage::RFIDMessage(unsigned char *buffer, unsigned int messageLength)
  * Destructs a message.
  */
 RFIDMessage::~RFIDMessage()
-{}
+{
+}
 
 /*!
  * \fn RFIDMessage::addCommand
@@ -70,7 +78,9 @@ int RFIDMessage::addCommand(unsigned short type, unsigned short value)
 {
     unsigned char *temp = new unsigned char[2]();
     shortToBuffer(value,temp);
-    return addCommand(type,temp,2);
+    int rc = addCommand(type,temp,2);
+    delete[] temp;
+    return rc;
 }
 
 /*!
@@ -87,7 +97,9 @@ int RFIDMessage::addCommand(unsigned short type, unsigned int value)
 {
     unsigned char *temp = new unsigned char[4]();
     intToBuffer(value,temp);
-    return addCommand(type,temp,4);
+    int rc = addCommand(type,temp,4);
+    delete[] temp;
+    return rc;
 }
 
 /*!
@@ -105,7 +117,9 @@ int RFIDMessage::addCommand(unsigned short type, unsigned long value, unsigned s
 {
     unsigned char *temp = new unsigned char[len];
     longToBuffer(value,temp,len);
-    return addCommand(type,temp,len);
+    int rc = addCommand(type, temp, len);
+    delete [] temp;
+    return rc;
 }
 
 /*!
@@ -116,24 +130,21 @@ int RFIDMessage::addCommand(unsigned short type, unsigned long value, unsigned s
  *
  * \param type use RFIDAttributeTypes entries to simplify the work.
  * \param value use RFIDCommandsCodes entries to simplify the work.
- * \param lenlength in bytes of the value \a value parameter.
+ * \param len in bytes of the value \a value parameter.
  * \return 0 if success, otherwise -1.
  */
 int RFIDMessage::addCommand(unsigned short type, unsigned char *value, unsigned short len)
 {
     if (len == 0)
+    {
         return -1;
+    }
 
-    MessageRFIDBody element;
+    unique_ptr<MessageRFIDBody> up_mbody = MessageRFIDBody::CreateCommand(type, value, len);
 
-    element.reserved = 0;
-    element.attributeType = type;
-    element.attributeValue = value;
-    element.length = 6 + len;
+    length += up_mbody->length;
 
-    length += element.length;
-
-    body.push_back(element);
+    body.push_back(move(up_mbody));
 
     return 0;
 }
@@ -154,18 +165,19 @@ unsigned char *RFIDMessage::getBuffer()
     shortToBuffer(length, &buffer[8]);
 
     /* body */
-    for(std::vector<MessageRFIDBody>::iterator it = body.begin(); it != body.end(); ++it) {
-        MessageRFIDBody temp = *it;
+    for (auto& temp : body)
+    {
 
-        shortToBuffer(temp.reserved, &buffer[index]);
+        shortToBuffer(temp->reserved, &buffer[index]);
         index += 2;
-        shortToBuffer(temp.length, &buffer[index]);
+        shortToBuffer(temp->length, &buffer[index]);
         index += 2;
-        shortToBuffer(temp.attributeType, &buffer[index]);
+        shortToBuffer(temp->attributeType, &buffer[index]);
         index += 2;
 
-        for (int i=0; i<(temp.length-6); i++){
-            buffer[index] = temp.attributeValue[i];
+        for (int i = 0; i < temp->attributeValueLength; i++)
+        {
+            buffer[index] = temp->attributeValue[i];
             index++;
         }
     }
@@ -182,27 +194,32 @@ unsigned short RFIDMessage::getLength()
     return length;
 }
 
-/*!
+bool RFIDMessage::isValid()
+{
+    return valid;
+}
+
+    /*!
  * \fn RFIDMessage::getRFIDs
  * \return all the RFIDs founds in the message.
  */
-vector<RFID> *RFIDMessage::getRFIDs()
+void RFIDMessage::getRFIDs(vector<unique_ptr<RFID>> *founds)
 {
-    vector<RFID> *founds = new vector<RFID>();
-    RFID rfid;
-
-    for(vector<MessageRFIDBody>::iterator it = body.begin(); it != body.end(); ++it){
-        MessageRFIDBody *temp = &(*it);
-        if (temp->attributeType == RFIDAttributeTypes::TAG_ID_LEN){
-            rfid.length = bufferToShort(temp->attributeValue);
+    if(valid){
+        this->print();
+    }
+    for(auto& p_el : body)
+    {
+        unsigned short tempLength;
+        unsigned char *tempValue;
+        if (p_el->attributeType == RFIDAttributeTypes::TAG_ID_LEN){
+            tempLength = bufferToShort(p_el->attributeValue);
         }
-        if (temp->attributeType == RFIDAttributeTypes::TAG_ID){
-            rfid.rfid = temp->attributeValue;
-            founds->push_back(rfid);
+        if (p_el->attributeType == RFIDAttributeTypes::TAG_ID){
+            tempValue = p_el->attributeValue;
+            founds->push_back(make_unique<RFID>(tempValue, tempLength));
         }
     }
-
-    return founds;
 }
 
 /*!
@@ -211,8 +228,8 @@ vector<RFID> *RFIDMessage::getRFIDs()
  */
 bool RFIDMessage::success()
 {
-    MessageRFIDBody last = (*body.end());
-    if (last.attributeType == RFIDAttributeTypes::RESULT_CODE && last.attributeValue == RFIDCommandsCodes::SUCCESS){
+    auto pp_last = body.end();
+    if ((*pp_last)->attributeType == RFIDAttributeTypes::RESULT_CODE && (*pp_last)->attributeValue == RFIDCommandsCodes::SUCCESS){
         return true;
     }
     return false;
@@ -232,15 +249,17 @@ void RFIDMessage::print()
     printf("Length     : %04x\n", length);
     printf("\n");
 
-    for(vector<MessageRFIDBody>::iterator it = body.begin(); it != body.end(); ++it){
-        printf("Reserved   : %04x\n", (*it).reserved);
-        printf("Length     : %04x\n", (*it).length);
-        printf("Att. Type  : %04x\n", (*it).attributeType);
+    for (auto& p_el : body)
+    {
+        printf("Reserved   : %04x\n", p_el->reserved);
+        printf("Length     : %04x\n", p_el->length);
+        printf("Att. Type  : %04x\n", p_el->attributeType);
 
         printf("Att. Value : ");
 
-        for (int i=0; i<((*it).length -6); i++){
-            printf("%02x ", (*it).attributeValue[i]);
+        for (int i = 0; i < p_el->attributeValueLength; i++)
+        {
+            printf("%02x ", p_el->attributeValue[i]);
             fflush(stdout);
         }
 

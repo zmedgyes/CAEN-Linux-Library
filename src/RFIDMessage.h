@@ -11,12 +11,15 @@
 
 #include "RFIDattributeTypes.h"
 #include "RFIDCommandsCodes.h"
+#include "MessageRFIDBody.h"
+#include "RFID.h"
 
 #include <vector>
 #include <cstring>
 #include <string>
 #include <cstdlib>
 #include <cstdio>
+#include <memory>
 
 #define HEAD_START 0
 #define MESSAGE_ID 2
@@ -24,30 +27,6 @@
 #define MSG_LENGTH 8
 
 using namespace std;
-
-/*!
- * \struct MessageRFIDBody
- *
- * The struct MessageRFIDBody represents a single frame of the easy2read commands list.
- */
-typedef struct MessageRFIDBody {
-    unsigned short reserved;        // 2 bytes
-    unsigned short length;          // 2 bytes
-    unsigned short attributeType;   // 2 bytes
-    unsigned char *attributeValue;  // * bytes
-
-} MessageRFIDBody;
-
-/*!
- * \struct RFID
- *
- * The struct RFID represents a single RFID code.
- */
-typedef struct RFID {
-    unsigned char *rfid;
-    unsigned short length;
-} RFID;
-
 
 /*!
  * \class RFIDMessage
@@ -65,8 +44,11 @@ typedef struct RFID {
 class RFIDMessage
 {
 public:
+    RFIDMessage();
     RFIDMessage(unsigned short id);
     RFIDMessage(unsigned char *buffer, unsigned int messageLength);
+    RFIDMessage(const RFIDMessage &) = delete;
+    RFIDMessage &operator=(const RFIDMessage &) = delete;
     virtual ~RFIDMessage();
 
     int addCommand(unsigned short type, unsigned short value);
@@ -76,8 +58,9 @@ public:
 
     unsigned char *getBuffer();
     unsigned short getLength();
+    bool isValid();
 
-    vector<RFID> *getRFIDs();
+    void getRFIDs(vector<unique_ptr<RFID>> *founds);
     bool success();
 
     void print();
@@ -88,8 +71,9 @@ private:
     unsigned short messageId;   // 2 bytes
     unsigned int   vendor;      // 4 bytes
     unsigned short length;      // 2 bytes
+    bool valid;
 
-    std::vector<MessageRFIDBody> body;
+    std::vector<std::unique_ptr<MessageRFIDBody>> body;
 
     void shortToBuffer(unsigned short s, unsigned char *converted);
     void intToBuffer(unsigned int i, unsigned char *converted);
