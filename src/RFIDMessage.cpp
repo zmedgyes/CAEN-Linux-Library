@@ -228,11 +228,12 @@ bool RFIDMessage::isValid()
     return valid;
 }
 
-    /*!
+/*!
  * \fn RFIDMessage::getRFIDs
  * \param founds a vector, where the found tags will be written into.
+ * \return a result code. 0 = OK.
  */
-void RFIDMessage::getRFIDs(vector<RFID> *founds)
+int  RFIDMessage::getRFIDs(vector<RFID> *founds)
 {
     MessageRFIDBody *last_source = nullptr;
     MessageRFIDBody *last_read_point = nullptr;
@@ -298,9 +299,43 @@ void RFIDMessage::getRFIDs(vector<RFID> *founds)
             founds->back().setRSSI(bufferToSignedShort((unsigned char*)el.attributeValue.data()));
         }
     }
+    return 0;
+}
 
+/*!
+ * \fn RFIDMessage::getPower
+ * \param power a container, where the power level will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getPower(unsigned int* power)
+{
+    for(MessageRFIDBody& el : body)
+    {
+        if(el.attributeType == RFIDAttributeTypes::POWER_GET)
+        {
+            (*power) = bufferToInt((unsigned char*)el.attributeValue.data());
+            return 0;
+        }
+    }
+    return -1;
+}
 
-
+/*!
+ * \fn RFIDMessage::getProtocol
+ * \param power a container, where the protocol will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getProtocol(unsigned int* protocol)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::PROTOCOL)
+        {
+            (*protocol) = bufferToInt((unsigned char *)el.attributeValue.data());
+            return 0;
+        }
+    }
+    return -1;
 }
 
 /*!

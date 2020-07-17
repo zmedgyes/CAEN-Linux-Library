@@ -35,6 +35,7 @@ public:
     static const unsigned short ADD_READ_POINT_TO_SOURCE          = 0x005F;
     static const unsigned short REMOVE_READ_POINT_FROM_SOURCE     = 0x0060;
     static const unsigned short SET_POWER                         = 0x0064;
+    static const unsigned short ERROR                             = 0x0066;
     static const unsigned short READ_TAG_DATA                     = 0x006E;
     static const unsigned short WRITE_TAG_DATA                    = 0x006F;
     static const unsigned short LOCK_TAG                          = 0x0070;

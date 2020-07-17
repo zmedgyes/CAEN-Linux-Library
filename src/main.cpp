@@ -17,15 +17,28 @@ int main()
     string source("Source_0");
     unsigned int protocol     = 0x00000003;
 
-    unsigned int powerInitial = 199;
-    unsigned int powerMiddle  = 80;
-    unsigned int powerTesting = 19;
+    //these values are for a Proton R4320P Reader
+    unsigned int powerMax = 1400;
+    unsigned int powerDefault = 800;
+    unsigned int powerMin = 14;
+
+    unsigned int powerCurrent;
+    unsigned int protocolCurrent;
 
     /*double gain = 8.0;
     double loss = 1.5;
     double ERPPower = 2000.0;*/
 
     RFIDMessage msgIn;
+
+    //Get Protocol
+    printf("GET PROTOCOL\n");
+    rfid.getProtocol(&msgIn);
+    msgIn.print();
+    msgIn.getProtocol(&protocolCurrent);
+    printf("Current protocol: %d\n", protocolCurrent);
+    printf("GET PROTOCOL COMPLETE\n");
+    getc(stdin);
 
     //Set Protocol
     printf("SET PROTOCOL\n");
@@ -52,12 +65,14 @@ int main()
     printf("GET POWER\n");
     rfid.getPower(&msgIn);
     msgIn.print();
+    msgIn.getPower(&powerCurrent);
+    printf("Current power: %d\n", powerCurrent);
     printf("GET POWER COMPLETE\n");
     getc(stdin);
 
     //Set Power
     printf("SET POWER\n");
-    rfid.setPower(&msgIn, powerMiddle);
+    rfid.setPower(&msgIn, powerMin);
     msgIn.print();
     printf("SET POWER COMPLETE\n");
     getc(stdin);
@@ -66,6 +81,8 @@ int main()
     printf("GET POWER\n");
     rfid.getPower(&msgIn);
     msgIn.print();
+    msgIn.getPower(&powerCurrent);
+    printf("Current power: %d\n", powerCurrent);
     printf("GET POWER COMPLETE\n");
     getc(stdin);
 

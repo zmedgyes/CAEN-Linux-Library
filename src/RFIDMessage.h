@@ -61,7 +61,9 @@ public:
     int initFromBuffer(unsigned char *buffer, unsigned int messageLength);
     bool isValid();
 
-    void getRFIDs(vector<RFID> *founds);
+    int getRFIDs(vector<RFID> *founds);
+    int getPower(unsigned int* power);
+    int getProtocol(unsigned int *protocol);
     bool success();
 
     void print();

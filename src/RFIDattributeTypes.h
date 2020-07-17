@@ -75,6 +75,7 @@ public:
     static const unsigned short G2_nsi            = 0x0074;
     static const unsigned short Q_PARAMETER       = 0x0075;
     static const unsigned short READER_INFO       = 0x0076;
+    static const unsigned short RF_REGULATION     = 0x0077;
     static const unsigned short RF_CHANNEL        = 0x0078;
     static const unsigned short RSSI              = 0x007A;
     static const unsigned short AVP_OPTION        = 0x007B;
