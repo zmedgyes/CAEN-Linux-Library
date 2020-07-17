@@ -9,10 +9,8 @@
 #ifndef RFIDMESSAGEBODY_H
 #define RFIDMESSAGEBODY_H
 
-#include <cstring>
+#include <string>
 #include <cstdlib>
-#include <memory>
-
 /*!
  * \class MessageRFIDBody
  * \brief MessageRFIDBody represents a single frame of the easy2read commands list.
@@ -26,14 +24,10 @@ class MessageRFIDBody
         unsigned short reserved;       // 2 bytes
         unsigned short length;         // 2 bytes
         unsigned short attributeType;  // 2 bytes
-        unsigned char *attributeValue; // * bytes
-
-        unsigned short attributeValueLength;
+        string attributeValue;
 
         MessageRFIDBody(unsigned short reserved, unsigned short type, unsigned char *value, unsigned short len);
-        ~MessageRFIDBody();
-
-        static unique_ptr<MessageRFIDBody> CreateCommand(unsigned short type, unsigned char *value, unsigned short len);
+        MessageRFIDBody(unsigned short type, unsigned char *value, unsigned short len);
 };
 
-#endif
+#endif //RFIDMESSAGEBODY_H

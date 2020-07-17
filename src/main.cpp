@@ -4,7 +4,7 @@
 #include "RFIDDevice.h"
 #include "RFIDMessage.h"
 
-#include "owasys.h"
+#include <chrono>
 
 using namespace std;
 
@@ -13,7 +13,8 @@ int main()
     SerialDevice serial("/dev/ttyO1", B115200, 0);
     RFIDDevice rfid(&serial);
 
-    unsigned char Source_0[9] = {0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x5F, 0x30, 0x00}; //Source_0\0
+    //unsigned char Source_0[9] = {0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x5F, 0x30, 0x00}; //Source_0\0
+    string source("Source_0");
     unsigned int protocol     = 0x00000003;
 
     unsigned int powerInitial = 199;
@@ -24,60 +25,85 @@ int main()
     double loss = 1.5;
     double ERPPower = 2000.0;*/
 
-    // Set Protocol
-    printf("Set Protocol\n");
-    rfid.setProtocol(protocol)->print();
+    RFIDMessage msgIn;
+
+    //Set Protocol
+    printf("SET PROTOCOL\n");
+    rfid.setProtocol(&msgIn, protocol);
+    msgIn.print();
     printf("SET PROTOCOL COMPLETE\n");
     getc(stdin);
 
-    // Get Power
-    printf("Get Power\n");
-    rfid.getPower()->print();
+    //Set Q
+    printf("SET Q\n");
+    rfid.setSourceQ(&msgIn, &source, RFIDSourceConfigCodes::Q_3);
+    msgIn.print();
+    printf("SET Q COMPLETE\n");
+    getc(stdin);
+
+    //Set Session
+    printf("SET SESSION\n");
+    rfid.setSourceSession(&msgIn, &source, RFIDSourceConfigCodes::SESSION_0);
+    msgIn.print();
+    printf("SET SESSION COMPLETE\n");
+    getc(stdin);
+
+    //Get Power
+    printf("GET POWER\n");
+    rfid.getPower(&msgIn);
+    msgIn.print();
     printf("GET POWER COMPLETE\n");
     getc(stdin);
 
-    // Set Power
-    printf("Set Power\n");
-    rfid.setPower(powerMiddle)->print();
+    //Set Power
+    printf("SET POWER\n");
+    rfid.setPower(&msgIn, powerMiddle);
+    msgIn.print();
     printf("SET POWER COMPLETE\n");
     getc(stdin);
 
-    // Get Power
-    printf("Get Power\n");
-    rfid.getPower()->print();
+    //Get Power
+    printf("GET POWER\n");
+    rfid.getPower(&msgIn);
+    msgIn.print();
     printf("GET POWER COMPLETE\n");
     getc(stdin);
 
-    // antenna status
-    printf("Get Antenna Status\n");
-    rfid.getAntennaStatus(Source_0, 9)->print();
-    printf("GET ANTENNA STATUS COMPLETE\n");
+    //Source status
+    printf("GET SOURCE STATUS\n");
+    rfid.getSourceStatus(&msgIn, &source);
+    msgIn.print();
+    printf("GET SOURCE STATUS COMPLETE\n");
     getc(stdin);
 
     printf("START INVENTORY\n");
 
-    // Inventory
+    //Inventory
+    //NOTE: the first couple of inventory calls could be as slow as ~10sec. Be patient.
     printf("\n");
-    vector<unique_ptr<RFID>> founds;
+    vector<RFID> founds;
+    string mask;
     for(;;) {
         founds.clear();
-        printf("Inventory\n");
+        printf("INVENTORY\n");
 
         int k=0;
+        auto start = std::chrono::high_resolution_clock::now();
+        rfid.inventory(&msgIn, &source, &mask, 0, 0x0011); //with RSSI and TID
+        auto stop = std::chrono::high_resolution_clock::now();
 
-        rfid.inventory(Source_0, 9, nullptr, 0,0,0x0011)->getRFIDs(&founds); //with RSSI and TID
+        msgIn.getRFIDs(&founds);
 
-        for (auto &p_el : founds)
+        for (RFID& rfid : founds)
         {
-            printf("%s \n", RFIDDevice::parseRFID(p_el.get()));
+            rfid.print();
             k++;
         }
-        printf("\n");
+        auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
+        printf("Tags found: %d , runtime: %lld ms\n", k, duration.count());
 
-        sleep(5);
+        sleep(1);
     }
-
-    printf("\n");
 
     return 0;
 }

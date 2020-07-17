@@ -1,9 +1,9 @@
 /*
  * Project:     serial RFID Library for linux
- * File:        RFIDAttributeTypes.h
- * Author:      Claudio "Dna" Bonesana
- * Date:        september 2013
- * Version:     1.0
+ * File:        RFIDDevice.h
+ * Author:      Zsolt Medgyesi
+ * Date:        july 2020
+ * Version:     1.1
  *
  */
 #ifndef RFIDDevice_H
@@ -12,7 +12,7 @@
 #include "RFIDMessage.h"
 #include "SerialDevice.h"
 
-#include <memory>
+#include <string>
 
 using namespace std;
 
@@ -32,22 +32,24 @@ public:
     RFIDDevice(SerialDevice *device);
     ~RFIDDevice();
 
-    static char *parseRFID(RFID *rfid);
-
-    unique_ptr<RFIDMessage> sendAndRecieve(RFIDMessage *message);
-
-    unique_ptr<RFIDMessage> getAntennaStatus(unsigned char *source, unsigned short len);
-    unique_ptr<RFIDMessage> getPower();
-    unique_ptr<RFIDMessage> setPower(unsigned int powerLevel);
-    unique_ptr<RFIDMessage> setProtocol(unsigned int protocol);
-    unique_ptr<RFIDMessage> getProtocol();
-    unique_ptr<RFIDMessage> inventory(unsigned char *source, unsigned short len);
-    unique_ptr<RFIDMessage> inventory(unsigned char *source, unsigned short source_len, unsigned char *mask, unsigned short mask_len, unsigned short mask_pos, unsigned short flags);
+    int getSourceStatus(RFIDMessage* result, string* source);
+    int getPower(RFIDMessage* result);
+    int setPower(RFIDMessage* result, unsigned int power_level);
+    int setProtocol(RFIDMessage* result, unsigned int protocol);
+    int getProtocol(RFIDMessage* result);
+    int setSourceQ(RFIDMessage* result, string* source, unsigned int value);
+    int setSourceSession(RFIDMessage* result, string* source, unsigned int value);
+    int inventory(RFIDMessage* result, string* source);
+    int inventory(RFIDMessage* result, string* source, string* mask, unsigned short mask_pos, unsigned short flags);
 
 private:
     unsigned short id;
-    unsigned short getNextId();
     SerialDevice *serialDevice;
+
+    int sendAndRecieve(RFIDMessage* tosend, RFIDMessage* result);
+    unsigned short getNextId();
+
+    int setSourceConfig(RFIDMessage* result, string* source, unsigned int param_id, unsigned int param_value);
 };
 
 #endif // RFIDDevice_H

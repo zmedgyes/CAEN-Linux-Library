@@ -1,16 +1,19 @@
 /*
  * Project:     serial RFID Library for linux
- * File:        RFIDAttributeTypes.h
- * Author:      Claudio "Dna" Bonesana
- * Date:        september 2013
- * Version:     1.0
+ * File:        RFIDMessage.h
+ * Author:      Zsolt Medgyesi
+ * Date:        july 2020
+ * Version:     1.1
  *
  */
 #ifndef RFIDMESSAGE_H
 #define RFIDMESSAGE_H
 
-#include "RFIDattributeTypes.h"
+#include "RFIDAttributeTypes.h"
 #include "RFIDCommandsCodes.h"
+#include "RFIDSourceConfigTypes.h"
+#include "RFIDSourceConfigCodes.h"
+
 #include "MessageRFIDBody.h"
 #include "RFID.h"
 
@@ -19,7 +22,6 @@
 #include <string>
 #include <cstdlib>
 #include <cstdio>
-#include <memory>
 
 #define HEAD_START 0
 #define MESSAGE_ID 2
@@ -47,8 +49,6 @@ public:
     RFIDMessage();
     RFIDMessage(unsigned short id);
     RFIDMessage(unsigned char *buffer, unsigned int messageLength);
-    RFIDMessage(const RFIDMessage &) = delete;
-    RFIDMessage &operator=(const RFIDMessage &) = delete;
     virtual ~RFIDMessage();
 
     int addCommand(unsigned short type, unsigned short value);
@@ -56,11 +56,12 @@ public:
     int addCommand(unsigned short type, unsigned long value, unsigned short len);
     int addCommand(unsigned short type, unsigned char *value, unsigned short len);
 
-    unsigned char *getBuffer();
+    int getBuffer(unsigned char *buffer);
     unsigned short getLength();
+    int initFromBuffer(unsigned char *buffer, unsigned int messageLength);
     bool isValid();
 
-    void getRFIDs(vector<unique_ptr<RFID>> *founds);
+    void getRFIDs(vector<RFID> *founds);
     bool success();
 
     void print();
@@ -73,13 +74,14 @@ private:
     unsigned short length;      // 2 bytes
     bool valid;
 
-    std::vector<std::unique_ptr<MessageRFIDBody>> body;
+    std::vector<MessageRFIDBody> body;
 
     void shortToBuffer(unsigned short s, unsigned char *converted);
     void intToBuffer(unsigned int i, unsigned char *converted);
     void longToBuffer(unsigned long l, unsigned char *converted, unsigned short len);
 
     unsigned short bufferToShort(unsigned char *buffer);
+    short bufferToSignedShort(unsigned char *buffer);
     unsigned int bufferToInt(unsigned char *buffer);
 };
 

@@ -1,4 +1,5 @@
 # CAEN-Linux-Library
-Contributed code from SUPSI - ISIN Istituto Sistemi Informativi e Networking on behalf of CAEN RFID. No support provided for this code.
+Serial connector interface for CAEN RFID Readers in Linux C++ environment.
 
-Provided as is by CAEN.
+Forked from [rainrfid/CAEN-Linux-Library](https://github.com/rainrfid/CAEN-Linux-Library).
+Fixed some memory-management issues, added some extra functionality. 

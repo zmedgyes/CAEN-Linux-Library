@@ -10,22 +10,53 @@
 #ifndef RFID_H
 #define RFID_H
 
-#include <cstring>
+#include <string>
 #include <cstdlib>
+#include <cstdio>
+
+using namespace std;
 
 /*!
  * \class RFID
- * \brief The class RFID represents a single RFID code.
+ * \brief The class RFID represents a single RFID Tag.
  */
 class RFID
 {
     public:
-        unsigned short length;
-        unsigned char *rfid;
+        
+        string id;
         short rssi;
+        string tid;
+        string source;
+        string read_point;
+        unsigned short type;
+        string timestamp;
 
-        RFID(unsigned char *value, unsigned short length);
-        ~RFID();
+        RFID();
+        RFID(string &id);
+
+        void print();
+
+        void setTID(string& value);
+        bool hasTID();
+        void setRSSI(short value);
+        bool hasRSSI();
+        void setSource(string& value);
+        bool hasSource();
+        void setReadPoint(string& value);
+        bool hasReadPoint();
+        void setType(unsigned short value);
+        bool hasType();
+        void setTimestamp(string& value);
+        bool hasTimestamp();
+
+    private:
+        bool is_set_rssi;
+        bool is_set_tid;
+        bool is_set_source;
+        bool is_set_read_point;
+        bool is_set_type;
+        bool is_set_timestamp;
 };
 
-#endif
+#endif //RFID_H
