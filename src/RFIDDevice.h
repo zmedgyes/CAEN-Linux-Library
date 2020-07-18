@@ -10,6 +10,7 @@
 #define RFIDDevice_H
 
 #include "RFIDMessage.h"
+#include "RFIDInventoryFlags.h"
 #include "SerialDevice.h"
 
 #include <string>

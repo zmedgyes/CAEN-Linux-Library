@@ -11,8 +11,10 @@
 
 #include "RFIDAttributeTypes.h"
 #include "RFIDCommandsCodes.h"
+#include "RFIDResultCodes.h"
 #include "RFIDSourceConfigTypes.h"
 #include "RFIDSourceConfigCodes.h"
+#include "RFIDProtocolCodes.h"
 
 #include "MessageRFIDBody.h"
 #include "RFID.h"

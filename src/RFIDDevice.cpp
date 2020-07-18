@@ -200,7 +200,8 @@ int RFIDDevice::inventory(RFIDMessage* result, string* source)
  */
 int RFIDDevice::inventory(RFIDMessage* result, string* source, string* mask, unsigned short mask_pos, unsigned short flags)
 {
-    unsigned short local_flags = (flags & 0xFFD9); //disable continous reading features
+    unsigned short block_continous_function = ~(RFIDInventoryFlags::FRAMED | RFIDInventoryFlags::CONTINOUS | RFIDInventoryFlags::EVENT_TRIGGER);
+    unsigned short local_flags = (flags & block_continous_function); //disable continous reading features
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::INVENTORY_TAG);
     msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);

@@ -15,7 +15,7 @@ int main()
 
     //unsigned char Source_0[9] = {0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x5F, 0x30, 0x00}; //Source_0\0
     string source("Source_0");
-    unsigned int protocol     = 0x00000003;
+    unsigned int protocol = RFIDProtocolCodes::EPC_C1G2;
 
     //these values are for a Proton R4320P Reader
     unsigned int powerMax = 1400;
@@ -56,7 +56,7 @@ int main()
 
     //Set Session
     printf("SET SESSION\n");
-    rfid.setSourceSession(&msgIn, &source, RFIDSourceConfigCodes::SESSION_0);
+    rfid.setSourceSession(&msgIn, &source, RFIDSourceConfigCodes::SESSION_S0);
     msgIn.print();
     printf("SET SESSION COMPLETE\n");
     getc(stdin);
@@ -96,17 +96,18 @@ int main()
     printf("START INVENTORY\n");
 
     //Inventory
-    //NOTE: the first couple of inventory calls could be as slow as ~10sec. Be patient.
+    //NOTE: the first couple of inventory calls could be as slow as 10-20sec. Be patient.
     printf("\n");
     vector<RFID> founds;
     string mask;
+    unsigned short flags = (RFIDInventoryFlags::RSSI | RFIDInventoryFlags::TID_READING);
     for(;;) {
         founds.clear();
         printf("INVENTORY\n");
 
         int k=0;
         auto start = std::chrono::high_resolution_clock::now();
-        rfid.inventory(&msgIn, &source, &mask, 0, 0x0011); //with RSSI and TID
+        rfid.inventory(&msgIn, &source, &mask, 0, flags);
         auto stop = std::chrono::high_resolution_clock::now();
 
         msgIn.getRFIDs(&founds);

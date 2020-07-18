@@ -346,7 +346,7 @@ bool RFIDMessage::success()
 {
     MessageRFIDBody &last = body.back();
     unsigned short value = bufferToShort((unsigned char *)last.attributeValue.data());
-    if (last.attributeType == RFIDAttributeTypes::RESULT_CODE && value == RFIDCommandsCodes::SUCCESS)
+    if (last.attributeType == RFIDAttributeTypes::RESULT_CODE && value == RFIDResultCodes::OK)
     {
         return true;
     }
