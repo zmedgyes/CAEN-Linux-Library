@@ -1,0 +1,25 @@
+var class_r_f_i_d =
+[
+    [ "RFID", "class_r_f_i_d.html#a91e8d4d6abb74ae099f9144d553db6ed", null ],
+    [ "RFID", "class_r_f_i_d.html#a098a8deb6efd1e4be2445f2d5afcd616", null ],
+    [ "hasReadPoint", "class_r_f_i_d.html#a34f20d5599fd8d1e6b02a966b31314c9", null ],
+    [ "hasRSSI", "class_r_f_i_d.html#ab46033a10213a43df5c3886881861bbd", null ],
+    [ "hasSource", "class_r_f_i_d.html#a3eecf3bf2e23c7836d88caae6809a942", null ],
+    [ "hasTID", "class_r_f_i_d.html#a0072be3145dbb715ff9a99cf654fb400", null ],
+    [ "hasTimestamp", "class_r_f_i_d.html#a70b5a7ef2bd3d260797867e32cb2c440", null ],
+    [ "hasType", "class_r_f_i_d.html#aa040f202c85f10befc2e7ce337b06db3", null ],
+    [ "print", "class_r_f_i_d.html#a80211e54c72202c05646ffbdef1d3d4d", null ],
+    [ "setReadPoint", "class_r_f_i_d.html#afe3832446d9780d52d630fd1e303cc5b", null ],
+    [ "setRSSI", "class_r_f_i_d.html#a938cd66196ef39515929ec9edc2d2871", null ],
+    [ "setSource", "class_r_f_i_d.html#afb2696c242673d2283df794bac92db5e", null ],
+    [ "setTID", "class_r_f_i_d.html#af146d13aff1d268155772a180902b125", null ],
+    [ "setTimestamp", "class_r_f_i_d.html#a00904d687d5fd2bc03dadf7f524ae5c5", null ],
+    [ "setType", "class_r_f_i_d.html#a4ab3c23b220afbc5e10c4e9d2b2172b2", null ],
+    [ "id", "class_r_f_i_d.html#aded1c106bd16be64dd8c4626d36d1dab", null ],
+    [ "read_point", "class_r_f_i_d.html#a18efb68bdcf5293efcc78fef2e2d935d", null ],
+    [ "rssi", "class_r_f_i_d.html#ae0475e0bb3e498500581f87a9fea8b0f", null ],
+    [ "source", "class_r_f_i_d.html#a98dbbd5e65df07a9449acacee7222268", null ],
+    [ "tid", "class_r_f_i_d.html#a05ce8ee12e312c76ee5cd59dab882e66", null ],
+    [ "timestamp", "class_r_f_i_d.html#a3e7b148e134f4e60c76ad93873fe2c8d", null ],
+    [ "type", "class_r_f_i_d.html#a052e72e03e96b7eb2b3fd9d68c43a01f", null ]
+];

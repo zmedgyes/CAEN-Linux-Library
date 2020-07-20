@@ -3,7 +3,7 @@
 /*!
  * \fn RFIDDevice::RFIDDevice
  *
- * Constructs the RFIDDevice based on a serialDevice and a configurazion file.
+ * Constructs the RFIDDevice based on a serialDevice.
  *
  * \param device the serialDevice used to contact the reader.
  */
@@ -200,7 +200,7 @@ int RFIDDevice::getProtocol(RFIDMessage *result)
 }
 
 /*!
- * \fn RFIDDevice::inventory
+ * \fn RFIDDevice::inventory(RFIDMessage *result, string *source)
  *
  * The method RFIDDevice::inventory performs an inventory scan and returns all the found RFID tags.
  *
@@ -217,7 +217,7 @@ int RFIDDevice::inventory(RFIDMessage *result, string *source)
 }
 
 /*!
- * \fn RFIDDevice::inventory
+ * \fn RFIDDevice::inventory(RFIDMessage *result, string *source, string *mask, unsigned short mask_pos, unsigned short flags)
  *
  * The method RFIDDevice::inventory performs an inventory scan and returns all the found RFID tags.
  *

@@ -1,0 +1,20 @@
+var searchData=
+[
+  ['send_52',['send',['../class_serial_device.html#aafcdc12473ea61a02625c9784c2d94aa',1,'SerialDevice']]],
+  ['sendandreceive_53',['sendAndReceive',['../class_serial_device.html#ab8f5dc7c6148e6b70bafdf55fbcd1d05',1,'SerialDevice']]],
+  ['serialdevice_54',['SerialDevice',['../class_serial_device.html',1,'']]],
+  ['setpower_55',['setPower',['../class_r_f_i_d_device.html#a83f31689dae28e71154583053d408918',1,'RFIDDevice']]],
+  ['setprotocol_56',['setProtocol',['../class_r_f_i_d_device.html#a18b6821a407dd65b4750e2035c4dc79f',1,'RFIDDevice']]],
+  ['setreadpoint_57',['setReadPoint',['../class_r_f_i_d.html#afe3832446d9780d52d630fd1e303cc5b',1,'RFID']]],
+  ['setrssi_58',['setRSSI',['../class_r_f_i_d.html#a938cd66196ef39515929ec9edc2d2871',1,'RFID']]],
+  ['setsource_59',['setSource',['../class_r_f_i_d.html#afb2696c242673d2283df794bac92db5e',1,'RFID']]],
+  ['setsourceq_60',['setSourceQ',['../class_r_f_i_d_device.html#ac255d2f15168dc5761ca8c4da923a5d8',1,'RFIDDevice']]],
+  ['setsourcesession_61',['setSourceSession',['../class_r_f_i_d_device.html#abdeb77ca64167916d24ed19c93625664',1,'RFIDDevice']]],
+  ['setsourcetarget_62',['setSourceTarget',['../class_r_f_i_d_device.html#a72b6fa015952ca9340c6bd7a38c2e3b0',1,'RFIDDevice']]],
+  ['settagid_63',['setTagId',['../class_r_f_i_d_device.html#a1e0d5e168e3b1f313e4d52ab15b30820',1,'RFIDDevice']]],
+  ['settid_64',['setTID',['../class_r_f_i_d.html#af146d13aff1d268155772a180902b125',1,'RFID']]],
+  ['settimestamp_65',['setTimestamp',['../class_r_f_i_d.html#a00904d687d5fd2bc03dadf7f524ae5c5',1,'RFID']]],
+  ['settype_66',['setType',['../class_r_f_i_d.html#a4ab3c23b220afbc5e10c4e9d2b2172b2',1,'RFID']]],
+  ['shorttobuffer_67',['shortToBuffer',['../class_r_f_i_d_message.html#a46c9baf57f34b8afe3e2d02ae9589a35',1,'RFIDMessage']]],
+  ['success_68',['success',['../class_r_f_i_d_message.html#ae257f0d7b382070055077b6fea581528',1,'RFIDMessage']]]
+];

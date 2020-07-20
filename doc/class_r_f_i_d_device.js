@@ -1,0 +1,26 @@
+var class_r_f_i_d_device =
+[
+    [ "RFIDDevice", "class_r_f_i_d_device.html#a6eff61c3540015958260614fcf35c92b", null ],
+    [ "~RFIDDevice", "class_r_f_i_d_device.html#aaff904ce48d73417b64829003cbe9720", null ],
+    [ "addReadPointToSource", "class_r_f_i_d_device.html#a300232438bfcca784177b9c7751fb4a0", null ],
+    [ "checkReadPointInSource", "class_r_f_i_d_device.html#a9918b99f426d33b4782c9bfb4918f1ce", null ],
+    [ "getFirmwareVersion", "class_r_f_i_d_device.html#a5eff4b528b672a4e997589357730b2f0", null ],
+    [ "getPower", "class_r_f_i_d_device.html#aeb1075bf9f08e797c31f4badfab256c2", null ],
+    [ "getProtocol", "class_r_f_i_d_device.html#a0a2dd26422b408b79fd8eba5011be095", null ],
+    [ "getReaderInfo", "class_r_f_i_d_device.html#ac2052e6cb8caf36adbda15d5c043bf46", null ],
+    [ "getReadPointStatus", "class_r_f_i_d_device.html#a84e8f92826c54eed3e6147721dc8b96c", null ],
+    [ "getSourceQ", "class_r_f_i_d_device.html#a985de301bff57e85386996b752e51f4a", null ],
+    [ "getSourceSession", "class_r_f_i_d_device.html#a27866ba8296c6dac52bfb1d5522f90dc", null ],
+    [ "getSourceTarget", "class_r_f_i_d_device.html#ae7dc3a086dc566b6f32368d6862b9a66", null ],
+    [ "inventory", "class_r_f_i_d_device.html#aecca981cc3487646a62109287fd55b08", null ],
+    [ "inventory", "class_r_f_i_d_device.html#aa747b2ce8f1b0289cdf856bf35d526e1", null ],
+    [ "readTagMemory", "class_r_f_i_d_device.html#a2488e4b5626b35376a792d0d0806cc2b", null ],
+    [ "removeReadPointFromSource", "class_r_f_i_d_device.html#ab707ba35f54c8fa9e7fa83edb1f5c7cc", null ],
+    [ "setPower", "class_r_f_i_d_device.html#a83f31689dae28e71154583053d408918", null ],
+    [ "setProtocol", "class_r_f_i_d_device.html#a18b6821a407dd65b4750e2035c4dc79f", null ],
+    [ "setSourceQ", "class_r_f_i_d_device.html#ac255d2f15168dc5761ca8c4da923a5d8", null ],
+    [ "setSourceSession", "class_r_f_i_d_device.html#abdeb77ca64167916d24ed19c93625664", null ],
+    [ "setSourceTarget", "class_r_f_i_d_device.html#a72b6fa015952ca9340c6bd7a38c2e3b0", null ],
+    [ "setTagId", "class_r_f_i_d_device.html#a1e0d5e168e3b1f313e4d52ab15b30820", null ],
+    [ "writeTagMemory", "class_r_f_i_d_device.html#aad39dafa22931397b7d4486b3d004fdb", null ]
+];

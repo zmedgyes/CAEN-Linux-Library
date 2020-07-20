@@ -1,0 +1,27 @@
+var class_r_f_i_d_message =
+[
+    [ "RFIDMessage", "class_r_f_i_d_message.html#a8f14439e1b8eca8e1ee1b39276ec19bf", null ],
+    [ "RFIDMessage", "class_r_f_i_d_message.html#a1d5c6d0eccb7fdcf60c475ff1ca284b7", null ],
+    [ "RFIDMessage", "class_r_f_i_d_message.html#aeed56f400495a8982828df326d7613a3", null ],
+    [ "~RFIDMessage", "class_r_f_i_d_message.html#aa2e784b9337c06478ce9d1e3d2a453d6", null ],
+    [ "addCommand", "class_r_f_i_d_message.html#ada0a67d0fb12b29771082f5f149490c7", null ],
+    [ "addCommand", "class_r_f_i_d_message.html#aa8dbdc87bdace55533faaead1a7b48cf", null ],
+    [ "addCommand", "class_r_f_i_d_message.html#a6d6866d7df18cc19a9bf146018ff9dad", null ],
+    [ "addCommand", "class_r_f_i_d_message.html#af4d6b1f8fed65966fc4e5a1f4b5bb82a", null ],
+    [ "getBuffer", "class_r_f_i_d_message.html#a92551c0301f5320d56b4f25c10677cb0", null ],
+    [ "getFirmwareVersion", "class_r_f_i_d_message.html#a9aacfa5e3f6586ab12efba21ba8346af", null ],
+    [ "getLength", "class_r_f_i_d_message.html#ac70808f9960dafcd3b71fa63695484cc", null ],
+    [ "getPower", "class_r_f_i_d_message.html#ad5f332c89803ab153e6dff8e23e1d31a", null ],
+    [ "getProtocol", "class_r_f_i_d_message.html#a80a5395ce090b99d2fe00a6bfc8d6115", null ],
+    [ "getReaderInfo", "class_r_f_i_d_message.html#a18c130f6a6fa69a3bf086a3093e0b972", null ],
+    [ "getReadPointStatus", "class_r_f_i_d_message.html#a51ab83d9a63b7fb7beebd2d0cdfe6548", null ],
+    [ "getResultCode", "class_r_f_i_d_message.html#af6a8224811183897f243ca03cb49b40a", null ],
+    [ "getRFIDs", "class_r_f_i_d_message.html#a780156c8eb73dced3f77e00b55db20b7", null ],
+    [ "getSourceConfigValue", "class_r_f_i_d_message.html#aa65a57ded21dbb1f37fd37d1bcde6a3b", null ],
+    [ "getTagReadData", "class_r_f_i_d_message.html#a0282e5d9ff0395f110037965e6ec3159", null ],
+    [ "initFromBuffer", "class_r_f_i_d_message.html#a249bc87853db00591c94b934d12ee1a1", null ],
+    [ "isReadPointInSource", "class_r_f_i_d_message.html#a552b908b97b5a3d453a16ebff79561ea", null ],
+    [ "isValid", "class_r_f_i_d_message.html#a281998c1e8e3563c59880804674eb2f0", null ],
+    [ "print", "class_r_f_i_d_message.html#aedb5273199cf88a860930847a3930e2c", null ],
+    [ "success", "class_r_f_i_d_message.html#ae257f0d7b382070055077b6fea581528", null ]
+];
