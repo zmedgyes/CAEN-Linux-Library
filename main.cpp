@@ -23,6 +23,7 @@ int main()
 
     unsigned int powerCurrent;
     unsigned int protocolCurrent;
+    unsigned int configCurrent;
     bool currentInStatus;
     string info;
 
@@ -73,6 +74,18 @@ int main()
     rfid.setProtocol(&msgIn, RFIDProtocolCodes::EPC_C1G2);
     msgIn.print();
     printf("SET PROTOCOL COMPLETE\n");
+    getc(stdin);
+
+    //Get Q
+    printf("GET Q\n");
+    rfid.getSourceQ(&msgIn, &source);
+    msgIn.print();
+    if(msgIn.success())
+    {
+        msgIn.getSourceConfigValue(&configCurrent);
+        printf("Current Q: %d\n", configCurrent);
+    }
+    printf("GET Q COMPLETE\n");
     getc(stdin);
 
     //Set Q
@@ -165,7 +178,7 @@ int main()
             k++;
         }
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
-        printf("Tags found: %d , runtime: %lld ms\n", k, duration.count());
+        printf("Tags found: %d , runtime: %ld ms\n", k, duration.count());
 
         sleep(1);
     }

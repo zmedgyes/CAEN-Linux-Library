@@ -17,7 +17,7 @@ RFID::RFID()
  * 
  * \param id the ID of the RFID tag. 
  */
-RFID::RFID(string& id)
+RFID::RFID(string &id)
     : id(id) 
 {
     this->is_set_rssi = false;
@@ -49,7 +49,7 @@ void RFID::print()
  * 
  * \param value the current TID of the RFID tag. 
  */
-void RFID::setTID(string& value)
+void RFID::setTID(string &value)
 {
     this->tid = value;
     this->is_set_tid = true;
@@ -100,7 +100,7 @@ bool RFID::hasRSSI()
  * 
  * \param value the source name of the current read. 
  */
-void RFID::setSource(string& value)
+void RFID::setSource(string &value)
 {
     source = value;
     this->is_set_source = true;
@@ -125,7 +125,7 @@ bool RFID::hasSource()
  * 
  * \param value the name of the current read point. 
  */
-void RFID::setReadPoint(string& value)
+void RFID::setReadPoint(string &value)
 {
     this->read_point = value;
     this->is_set_read_point = true;
@@ -174,7 +174,7 @@ bool RFID::hasType()
  * 
  * \param value the current read timestamp of the RFID tag. 
  */
-void RFID::setTimestamp(string& value)
+void RFID::setTimestamp(string &value)
 {
     this->timestamp = value;
     this->is_set_timestamp = true;

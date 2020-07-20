@@ -12,6 +12,7 @@
 #include "RFIDMessage.h"
 #include "RFIDInventoryFlags.h"
 #include "RFIDMemoryBankCodes.h"
+#include "RFIDSourceConfigTypes.h"
 #include "SerialDevice.h"
 
 #include <string>
@@ -36,21 +37,28 @@ public:
 
     int getReaderInfo(RFIDMessage *result);
     int getFirmwareVersion(RFIDMessage *result);
-    int getReadPointStatus(RFIDMessage* result, string* read_point);
-    int getPower(RFIDMessage* result);
-    int setPower(RFIDMessage* result, unsigned int power_level);
-    int setProtocol(RFIDMessage* result, unsigned int protocol);
-    int getProtocol(RFIDMessage* result);
-    int setSourceQ(RFIDMessage* result, string* source, unsigned int value);
-    int setSourceSession(RFIDMessage* result, string* source, unsigned int value);
+    int getReadPointStatus(RFIDMessage *result, string *read_point);
+    int getPower(RFIDMessage *result);
+    int setPower(RFIDMessage *result, unsigned int power_level);
+    int getProtocol(RFIDMessage *result);
+    int setProtocol(RFIDMessage *result, unsigned int protocol);
+
+    int getSourceQ(RFIDMessage *result, string *source);
+    int setSourceQ(RFIDMessage *result, string *source, unsigned int value);
+    int getSourceSession(RFIDMessage *result, string *source);
+    int setSourceSession(RFIDMessage *result, string *source, unsigned int value);
+    int getSourceTarget(RFIDMessage *result, string *source);
     int setSourceTarget(RFIDMessage *result, string *source, unsigned int value);
-    int inventory(RFIDMessage* result, string* source);
-    int inventory(RFIDMessage* result, string* source, string* mask, unsigned short mask_pos, unsigned short flags);
+
+    int inventory(RFIDMessage *result, string *source);
+    int inventory(RFIDMessage *result, string *source, string *mask, unsigned short mask_pos, unsigned short flags);
+    
     int readTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, unsigned short length);
     int writeTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, string *password);
     int setTagId(RFIDMessage *result, string *source, string *oldTagId, string *newTagId, string *password);
     //TODO: lockTag
     //TODO: killTag
+
     int checkReadPointInSource(RFIDMessage *result, string *read_point, string *source);
     int addReadPointToSource(RFIDMessage *result, string *read_point, string *source);
     int removeReadPointFromSource(RFIDMessage *result, string *read_point, string *source);
@@ -59,10 +67,11 @@ private:
     unsigned short id;
     SerialDevice *serialDevice;
 
-    int sendAndRecieve(RFIDMessage* tosend, RFIDMessage* result);
+    int sendAndRecieve(RFIDMessage *tosend, RFIDMessage *result);
     unsigned short getNextId();
 
-    int setSourceConfig(RFIDMessage* result, string* source, unsigned int param_id, unsigned int param_value);
+    int setSourceConfig(RFIDMessage *result, string *source, unsigned int param_id, unsigned int param_value);
+    int getSourceConfig(RFIDMessage *result, string *source, unsigned int param_id);
 };
 
 #endif // RFIDDevice_H

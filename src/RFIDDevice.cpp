@@ -30,7 +30,7 @@ RFIDDevice::~RFIDDevice()
  * \param result the message sent from the reader with the response.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::sendAndRecieve(RFIDMessage* tosend, RFIDMessage* result)
+int RFIDDevice::sendAndRecieve(RFIDMessage *tosend, RFIDMessage *result)
 {
     unsigned int bytesRead;
     bool messagePending = true;
@@ -126,7 +126,7 @@ int RFIDDevice::getFirmwareVersion(RFIDMessage *result)
  * \param read_point the name of the antenna.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::getReadPointStatus(RFIDMessage* result, string* read_point)
+int RFIDDevice::getReadPointStatus(RFIDMessage *result, string *read_point)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::CHECK_READ_POINT_STATUS);
@@ -142,7 +142,7 @@ int RFIDDevice::getReadPointStatus(RFIDMessage* result, string* read_point)
  * \param result a message where the current power level will be written into.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::getPower(RFIDMessage* result)
+int RFIDDevice::getPower(RFIDMessage *result)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_POWER);
@@ -158,7 +158,7 @@ int RFIDDevice::getPower(RFIDMessage* result)
  * \param power_level the new power level (mW).
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::setPower(RFIDMessage* result, unsigned int power_level)
+int RFIDDevice::setPower(RFIDMessage *result, unsigned int power_level)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_POWER);
@@ -175,7 +175,7 @@ int RFIDDevice::setPower(RFIDMessage* result, unsigned int power_level)
  * \param protocol the new protocol.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::setProtocol(RFIDMessage* result, unsigned int protocol)
+int RFIDDevice::setProtocol(RFIDMessage *result, unsigned int protocol)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_PROTOCOL);
@@ -192,7 +192,7 @@ int RFIDDevice::setProtocol(RFIDMessage* result, unsigned int protocol)
  * \param source name of the source.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::getProtocol(RFIDMessage* result)
+int RFIDDevice::getProtocol(RFIDMessage *result)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_PROTOCOL);
@@ -208,7 +208,7 @@ int RFIDDevice::getProtocol(RFIDMessage* result)
  * \param source name of the source.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::inventory(RFIDMessage* result, string* source)
+int RFIDDevice::inventory(RFIDMessage *result, string *source)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::INVENTORY_TAG);
@@ -228,14 +228,14 @@ int RFIDDevice::inventory(RFIDMessage* result, string* source)
  * \param flags flags describing which information should be included in the tag response.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::inventory(RFIDMessage* result, string* source, string* mask, unsigned short mask_pos, unsigned short flags)
+int RFIDDevice::inventory(RFIDMessage *result, string *source, string *mask, unsigned short mask_pos, unsigned short flags)
 {
     unsigned short block_continous_function = ~(RFIDInventoryFlags::FRAMED | RFIDInventoryFlags::CONTINOUS | RFIDInventoryFlags::EVENT_TRIGGER);
     unsigned short local_flags = (flags & block_continous_function); //disable continous reading features
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::INVENTORY_TAG);
     msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
-    msgCommand.addCommand(RFIDAttributeTypes::LENGTH, mask->size());
+    msgCommand.addCommand(RFIDAttributeTypes::LENGTH, (unsigned short)mask->size());
     msgCommand.addCommand(RFIDAttributeTypes::TAG_ID_MASK, (unsigned char *)mask->data(), mask->size());
     msgCommand.addCommand(RFIDAttributeTypes::TAG_ID_MASK_POS, mask_pos);
     msgCommand.addCommand(RFIDAttributeTypes::INVENTORY_FLAGS, local_flags);
@@ -253,7 +253,7 @@ int RFIDDevice::inventory(RFIDMessage* result, string* source, string* mask, uns
  * \param param_value new parameter value.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::setSourceConfig(RFIDMessage* result, string* source, unsigned int param_id, unsigned int param_value)
+int RFIDDevice::setSourceConfig(RFIDMessage *result, string *source, unsigned int param_id, unsigned int param_value)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::SET_SOURCE_CONFIG);
@@ -261,6 +261,39 @@ int RFIDDevice::setSourceConfig(RFIDMessage* result, string* source, unsigned in
     msgCommand.addCommand(RFIDAttributeTypes::CONFIG_PARAMETER, param_id);
     msgCommand.addCommand(RFIDAttributeTypes::CONFIG_VALUE, param_value);
     return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::getSourceConfig
+ *
+ * The method RFIDDevice::getSourceConfig gets a current value of the source configuration parameter.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param param_id ID of the parameter.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::getSourceConfig(RFIDMessage *result, string *source, unsigned int param_id)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_SOURCE_CONFIG);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::CONFIG_PARAMETER, param_id);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::getSourceQ
+ *
+ * The method RFIDDevice::getSourceQ gets current value of the Q anti-collision parameter of the source (related to the approximated number of tags to be read).
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::getSourceQ(RFIDMessage *result, string *source)
+{
+    return getSourceConfig(result, source, RFIDSourceConfigTypes::Q);
 }
 
 /*!
@@ -273,9 +306,23 @@ int RFIDDevice::setSourceConfig(RFIDMessage* result, string* source, unsigned in
  * \param value new Q value.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::setSourceQ(RFIDMessage* result, string* source, unsigned int value)
+int RFIDDevice::setSourceQ(RFIDMessage *result, string *source, unsigned int value)
 {
     return setSourceConfig(result, source, RFIDSourceConfigTypes::Q, value);
+}
+
+/*!
+ * \fn RFIDDevice::getSourceSession
+ *
+ * The method RFIDDevice::getSourceSession gets the current session mode of the source in which it performs the reading cycles.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::getSourceSession(RFIDMessage *result, string *source)
+{
+    return getSourceConfig(result, source, RFIDSourceConfigTypes::SESSION);
 }
 
 /*!
@@ -288,9 +335,23 @@ int RFIDDevice::setSourceQ(RFIDMessage* result, string* source, unsigned int val
  * \param value new session mode.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::setSourceSession(RFIDMessage* result, string* source, unsigned int value)
+int RFIDDevice::setSourceSession(RFIDMessage *result, string *source, unsigned int value)
 {
     return setSourceConfig(result, source, RFIDSourceConfigTypes::SESSION, value);
+}
+
+/*!
+ * \fn RFIDDevice::getSourceTarget
+ *
+ * The method RFIDDevice::getSourceTarget gets the target mode of the source in which it performs the reading cycles.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::getSourceTarget(RFIDMessage *result, string *source)
+{
+    return getSourceConfig(result, source, RFIDSourceConfigTypes::TARGET);
 }
 
 /*!
@@ -387,7 +448,10 @@ int RFIDDevice::setTagId(RFIDMessage *result, string *source, string *oldTagId, 
     if(rc == 0 && result->success())
     {
         unsigned char set_epc_cmd[2];
-        RFIDMessage::shortToBuffer(0x3000,set_epc_cmd);
+        unsigned short epc_activate = 0x3000;
+        //epc_activate calculation: (newTagId.size() == 12 => 0x3000)
+        //epc_activate = ((newTagId.size() / 2) + (newTagId.size()%2)) << 11;
+        RFIDMessage::shortToBuffer(epc_activate, set_epc_cmd);
         string cmd_value((char*) set_epc_cmd,2);
         rc = writeTagMemory(result, source, oldTagId, RFIDMemoryBankCodes::EPC, 0x0002, &cmd_value, password);
     }

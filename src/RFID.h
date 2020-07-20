@@ -37,17 +37,17 @@ class RFID
 
         void print();
 
-        void setTID(string& value);
+        void setTID(string &value);
         bool hasTID();
         void setRSSI(short value);
         bool hasRSSI();
-        void setSource(string& value);
+        void setSource(string &value);
         bool hasSource();
-        void setReadPoint(string& value);
+        void setReadPoint(string &value);
         bool hasReadPoint();
         void setType(unsigned short value);
         bool hasType();
-        void setTimestamp(string& value);
+        void setTimestamp(string &value);
         bool hasTimestamp();
 
     private:

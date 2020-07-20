@@ -12,9 +12,11 @@
 #include "RFIDAttributeTypes.h"
 #include "RFIDCommandsCodes.h"
 #include "RFIDResultCodes.h"
-#include "RFIDSourceConfigTypes.h"
 #include "RFIDSourceConfigCodes.h"
 #include "RFIDProtocolCodes.h"
+#include "RFIDBitRateCodes.h"
+#include "RFIDReadPointStatusCodes.h"
+#include "RFIDRegulationCodes.h"
 
 #include "MessageRFIDBody.h"
 #include "RFID.h"
@@ -50,7 +52,7 @@ class RFIDMessage
 public:
     RFIDMessage();
     RFIDMessage(unsigned short id);
-    RFIDMessage(unsigned char *buffer, unsigned int messageLength);
+    RFIDMessage(unsigned char *buffer, unsigned int message_length);
     virtual ~RFIDMessage();
 
     int addCommand(unsigned short type, unsigned short value);
@@ -60,17 +62,18 @@ public:
 
     int getBuffer(unsigned char *buffer);
     unsigned short getLength();
-    int initFromBuffer(unsigned char *buffer, unsigned int messageLength);
+    int initFromBuffer(unsigned char *buffer, unsigned int message_length);
     bool isValid();
 
     int getRFIDs(vector<RFID> *founds);
-    int getPower(unsigned int* power);
+    int getPower(unsigned int *power);
     int getProtocol(unsigned int *protocol);
     int getReaderInfo(string *info);
     int getFirmwareVersion(string *version);
     int getReadPointStatus(unsigned int *status);
     int getTagReadData(string *data);
     int isReadPointInSource(bool *status);
+    int getSourceConfigValue(unsigned int *value);
     int getResultCode(unsigned short *code);
     bool success();
 

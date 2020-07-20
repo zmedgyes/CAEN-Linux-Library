@@ -39,10 +39,10 @@ RFIDMessage::RFIDMessage(unsigned short id)
  * \param buffer the buffer of data recieved from the reader.
  * \param messageLength the lenght of the buffer.
  */
-RFIDMessage::RFIDMessage(unsigned char *buffer, unsigned int messageLength)
+RFIDMessage::RFIDMessage(unsigned char *buffer, unsigned int message_length)
 {
     valid = false;
-    initFromBuffer(buffer, messageLength);
+    initFromBuffer(buffer, message_length);
 }
 
 /*!
@@ -54,13 +54,13 @@ RFIDMessage::RFIDMessage(unsigned char *buffer, unsigned int messageLength)
  * \param messageLength the lenght of the buffer.
  * \return a result code. 0 = OK.
  */
-int RFIDMessage::initFromBuffer(unsigned char *buffer, unsigned int messageLength)
+int RFIDMessage::initFromBuffer(unsigned char *buffer, unsigned int message_length)
 {
     //in case if this is a re-init
     valid = false;
     body.clear();
 
-    if(messageLength < 10)
+    if(message_length < 10)
     {
         return -1;
     }
@@ -72,7 +72,7 @@ int RFIDMessage::initFromBuffer(unsigned char *buffer, unsigned int messageLengt
 
     unsigned int position = 10;
 
-    while (position < messageLength)
+    while (position < message_length)
     {
         short reserved = bufferToShort(&buffer[position]);
         short length = bufferToShort(&buffer[position + 2]);
@@ -423,6 +423,24 @@ int RFIDMessage::isReadPointInSource(bool *status)
         {
             unsigned short boolVal = bufferToShort((unsigned char *)el.attributeValue.data());
             (*status) = (boolVal == 0x0001);
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/*!
+ * \fn RFIDMessage::getSourceConfigValue
+ * \param value a container, where the source config value will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getSourceConfigValue(unsigned int *value)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::CONFIG_VALUE)
+        {
+            (*value) = bufferToInt((unsigned char *)el.attributeValue.data());
             return 0;
         }
     }
