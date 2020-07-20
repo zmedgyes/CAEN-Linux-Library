@@ -322,7 +322,7 @@ int RFIDMessage::getPower(unsigned int* power)
 
 /*!
  * \fn RFIDMessage::getProtocol
- * \param power a container, where the protocol will be written into.
+ * \param protocol a container, where the protocol will be written into.
  * \return a result code. 0 = OK.
  */
 int RFIDMessage::getProtocol(unsigned int* protocol)
@@ -339,18 +339,125 @@ int RFIDMessage::getProtocol(unsigned int* protocol)
 }
 
 /*!
+ * \fn RFIDMessage::getReadPointStatus
+ * \param status a container, where the read point status will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getReadPointStatus(unsigned int *status)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::READ_POINT_STATUS)
+        {
+            (*status) = bufferToInt((unsigned char *)el.attributeValue.data());
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/*!
+ * \fn RFIDMessage::getReaderInfo
+ * \param info a container, where the reader info (product name + serial no.) will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getReaderInfo(string *info)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::READER_INFO)
+        {
+            info->assign(el.attributeValue);
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/*!
+ * \fn RFIDMessage::getTagReadData
+ * \param data a container, where the data received from the tag will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getTagReadData(string *data)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::TAG_VALUE)
+        {
+            data->assign(el.attributeValue);
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/*!
+ * \fn RFIDMessage::getFirmwareVersion
+ * \param version a container, where the firmware version will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getFirmwareVersion(string *version)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::FW_RELEASE)
+        {
+            version->assign(el.attributeValue);
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/*!
+ * \fn RFIDMessage::isReadPointInSource
+ * \param status a container, where the check result will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::isReadPointInSource(bool *status)
+{
+    for (MessageRFIDBody &el : body)
+    {
+        if (el.attributeType == RFIDAttributeTypes::BOOLEAN)
+        {
+            unsigned short boolVal = bufferToShort((unsigned char *)el.attributeValue.data());
+            (*status) = (boolVal == 0x0001);
+            return 0;
+        }
+    }
+    return -1;
+}
+
+/*!
  * \fn RFIDMessage::success
  * \return true if the message is a successfull response message, otherwise false.
  */
 bool RFIDMessage::success()
 {
-    MessageRFIDBody &last = body.back();
-    unsigned short value = bufferToShort((unsigned char *)last.attributeValue.data());
-    if (last.attributeType == RFIDAttributeTypes::RESULT_CODE && value == RFIDResultCodes::OK)
+    unsigned short value;
+    int rc = getResultCode(&value);
+    if (rc == 0 && value == RFIDResultCodes::OK)
     {
         return true;
     }
     return false;
+}
+
+/*!
+ * \fn RFIDMessage::getResultCode
+ * \param code a container, where the result code will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDMessage::getResultCode(unsigned short *code)
+{
+    MessageRFIDBody &last = body.back();
+    if(last.attributeType == RFIDAttributeTypes::RESULT_CODE)
+    {
+        (*code) = bufferToShort((unsigned char *)last.attributeValue.data());
+        return 0;
+    }
+    return -1;
 }
 
 /*!

@@ -66,9 +66,23 @@ public:
     int getRFIDs(vector<RFID> *founds);
     int getPower(unsigned int* power);
     int getProtocol(unsigned int *protocol);
+    int getReaderInfo(string *info);
+    int getFirmwareVersion(string *version);
+    int getReadPointStatus(unsigned int *status);
+    int getTagReadData(string *data);
+    int isReadPointInSource(bool *status);
+    int getResultCode(unsigned short *code);
     bool success();
 
     void print();
+
+    static void shortToBuffer(unsigned short s, unsigned char *converted);
+    static void intToBuffer(unsigned int i, unsigned char *converted);
+    static void longToBuffer(unsigned long l, unsigned char *converted, unsigned short len);
+
+    static unsigned short bufferToShort(unsigned char *buffer);
+    static short bufferToSignedShort(unsigned char *buffer);
+    static unsigned int bufferToInt(unsigned char *buffer);
 
 private:
     /* header */
@@ -79,14 +93,6 @@ private:
     bool valid;
 
     std::vector<MessageRFIDBody> body;
-
-    void shortToBuffer(unsigned short s, unsigned char *converted);
-    void intToBuffer(unsigned int i, unsigned char *converted);
-    void longToBuffer(unsigned long l, unsigned char *converted, unsigned short len);
-
-    unsigned short bufferToShort(unsigned char *buffer);
-    short bufferToSignedShort(unsigned char *buffer);
-    unsigned int bufferToInt(unsigned char *buffer);
 };
 
 #endif // RFIDMESSAGE_H

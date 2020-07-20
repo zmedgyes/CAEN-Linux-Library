@@ -88,19 +88,49 @@ unsigned short RFIDDevice::getNextId()
 }
 
 /*!
- * \fn RFIDDevice::getSourceStatus
+ * \fn RFIDDevice::getReaderInfo
  *
- * The method RFIDDevice::getSourceStatus requests the status of the \a source antenna.
+ * The method RFIDDevice::getReaderInfo requests product name and serial no. information of the RFID reader.
  *
  * \param result a message where the antenna status will be written into.
- * \param source the name of the antenna.
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::getSourceStatus(RFIDMessage* result, string* source)
+int RFIDDevice::getReaderInfo(RFIDMessage *result)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_READER_INFO);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::getFirmwareVersion
+ *
+ * The method RFIDDevice::getFirmwareVersion requests the current firmware version of tthe RFID reader.
+ *
+ * \param result a message where the antenna status will be written into.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::getFirmwareVersion(RFIDMessage *result)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::GET_FIRMWARE_RELEASE);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::getReadPointStatus
+ *
+ * The method RFIDDevice::getReadPointStatus requests the status of the \a read_point antenna.
+ *
+ * \param result a message where the antenna status will be written into.
+ * \param read_point the name of the antenna.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::getReadPointStatus(RFIDMessage* result, string* read_point)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::CHECK_READ_POINT_STATUS);
-    msgCommand.addCommand(RFIDAttributeTypes::READ_POINT_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::READ_POINT_NAME, (unsigned char *)read_point->c_str(), read_point->size() + 1);
     return sendAndRecieve(&msgCommand, result);
 }
 
@@ -261,4 +291,162 @@ int RFIDDevice::setSourceQ(RFIDMessage* result, string* source, unsigned int val
 int RFIDDevice::setSourceSession(RFIDMessage* result, string* source, unsigned int value)
 {
     return setSourceConfig(result, source, RFIDSourceConfigTypes::SESSION, value);
+}
+
+/*!
+ * \fn RFIDDevice::setSourceTarget
+ *
+ * The method RFIDDevice::setSourceTarget sets the target (A/B) mode of the source in which it should perform the reading cycles.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param value new target mode.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::setSourceTarget(RFIDMessage *result, string *source, unsigned int value)
+{
+    return setSourceConfig(result, source, RFIDSourceConfigTypes::TARGET, value);
+}
+
+/*!
+ * \fn RFIDDevice::readTagMemory
+ *
+ * The method RFIDDevice::readTagMemory reads the tag memory.
+ * \note
+ * The tag memory may only be read in words (2byte), but the addressing and datalength need to be given in bytes. Make sure both of the address and the length are even.
+ * 
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param tagId the id of the target tag.
+ * \param memory_bank the code of the target memory bank on the tag.
+ * \param address the start position in the memory bank, where the new data will be read from.
+ * \param length the length of the value to be read.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::readTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, unsigned short length)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::READ_TAG_DATA_EPC_C1G2);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID_LEN, (unsigned short)tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID, (unsigned char *)tagId->data(), tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::MEMORY_BANK, memory_bank);
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ADDRESS, address);
+    msgCommand.addCommand(RFIDAttributeTypes::LENGTH, length);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::writeTagMemory
+ *
+ * The method RFIDDevice::writeTagMemory writes the tag memory.
+ * \note
+ * The tag memory may only be written in words (2byte), but the addressing and datalength need to be given in bytes. Make sure both of the address and the length of the value are even.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param tagId the id of the target tag.
+ * \param memory_bank the code of the target memory bank on the tag.
+ * \param address the start position in the memory bank, where the new data will be written into.
+ * \param value the new value to be set.
+ * \param password the password of the tag 
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::writeTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, string *password)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::WRITE_TAG_DATA_EPC_C1G2);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(),source->size()+1);
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID_LEN,(unsigned short)tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID, (unsigned char *)tagId->data(), tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::MEMORY_BANK, memory_bank);
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ADDRESS, address);
+    msgCommand.addCommand(RFIDAttributeTypes::LENGTH,(unsigned short)value->size());
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_VALUE, (unsigned char *)value->data(), value->size());
+    msgCommand.addCommand(RFIDAttributeTypes::G2_PASSWORD, (unsigned char *)password->data(), password->size());
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::setTagId
+ *
+ * The method RFIDDevice::setTagId sets a new Id to the tag memory.
+ * \note
+ * The tag memory may only be written in words (2byte), but the addressing and datalength need to be given in bytes. Make sure the length of the new tagId is even.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param oldTagId the current id of the target tag.
+ * \param newTagId the new id of the target tag.
+ * \param password the password of the tag 
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::setTagId(RFIDMessage *result, string *source, string *oldTagId, string *newTagId, string *password)
+{
+    int rc = writeTagMemory(result, source, oldTagId, RFIDMemoryBankCodes::EPC, 0x0004, newTagId, password);
+    if(rc == 0 && result->success())
+    {
+        unsigned char set_epc_cmd[2];
+        RFIDMessage::shortToBuffer(0x3000,set_epc_cmd);
+        string cmd_value((char*) set_epc_cmd,2);
+        rc = writeTagMemory(result, source, oldTagId, RFIDMemoryBankCodes::EPC, 0x0002, &cmd_value, password);
+    }
+    return rc;
+}
+
+/*!
+ * \fn RFIDDevice::checkReadPointInSource
+ *
+ * The method RFIDDevice::checkReadPointInSource checks if the given read-point is assigned to the source.
+ *
+ * \param result a message where the success status will be written into.
+ * \param read_point the name of the read-point.
+ * \param source the name of the source.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::checkReadPointInSource(RFIDMessage *result, string *read_point, string *source)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::CHECK_READ_POINT_IN_SOURCE);
+    msgCommand.addCommand(RFIDAttributeTypes::READ_POINT_NAME, (unsigned char *)read_point->c_str(), read_point->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::addReadPointToSource
+ *
+ * The method RFIDDevice::addReadPointToSource adds the read-point to the source.
+ *
+ * \param result a message where the success status will be written into.
+ * \param read_point the name of the read-point.
+ * \param source the name of the source.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::addReadPointToSource(RFIDMessage *result, string *read_point, string *source)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::ADD_READ_POINT_TO_SOURCE);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::READ_POINT_NAME, (unsigned char *)read_point->c_str(), read_point->size() + 1);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::removeReadPointFromSource
+ *
+ * The method RFIDDevice::removeReadPointFromSource removes the read-point from the source.
+ *
+ * \param result a message where the success status will be written into.
+ * \param read_point the name of the read-point.
+ * \param source the name of the source.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::removeReadPointFromSource(RFIDMessage *result, string *read_point, string *source)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::REMOVE_READ_POINT_FROM_SOURCE);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::READ_POINT_NAME, (unsigned char *)read_point->c_str(), read_point->size() + 1);
+    return sendAndRecieve(&msgCommand, result);
 }

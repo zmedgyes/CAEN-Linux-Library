@@ -13,9 +13,8 @@ int main()
     SerialDevice serial("/dev/ttyO1", B115200, 0);
     RFIDDevice rfid(&serial);
 
-    //unsigned char Source_0[9] = {0x53, 0x6F, 0x75, 0x72, 0x63, 0x65, 0x5F, 0x30, 0x00}; //Source_0\0
     string source("Source_0");
-    unsigned int protocol = RFIDProtocolCodes::EPC_C1G2;
+    string read_point("Ant0");
 
     //these values are for a Proton R4320P Reader
     unsigned int powerMax = 1400;
@@ -24,6 +23,8 @@ int main()
 
     unsigned int powerCurrent;
     unsigned int protocolCurrent;
+    bool currentInStatus;
+    string info;
 
     /*double gain = 8.0;
     double loss = 1.5;
@@ -31,18 +32,45 @@ int main()
 
     RFIDMessage msgIn;
 
+    //Get reader info
+    printf("GET READER INFO\n");
+    rfid.getReaderInfo(&msgIn);
+    msgIn.print();
+    if (msgIn.success())
+    {
+        msgIn.getReaderInfo(&info);
+        printf("Reader: %s\n", info.c_str());
+    }
+    printf("GET READER INFO COMPLETE\n");
+    getc(stdin);
+
+    //Get firmware version
+    printf("GET FIRMWARE VERSION\n");
+    rfid.getFirmwareVersion(&msgIn);
+    msgIn.print();
+    if (msgIn.success())
+    {
+        msgIn.getFirmwareVersion(&info);
+        printf("Firmware: %s\n", info.c_str());
+    }
+    printf("GET FIRMWARE VERSION COMPLETE\n");
+    getc(stdin);
+
     //Get Protocol
     printf("GET PROTOCOL\n");
     rfid.getProtocol(&msgIn);
     msgIn.print();
-    msgIn.getProtocol(&protocolCurrent);
-    printf("Current protocol: %d\n", protocolCurrent);
+    if(msgIn.success())
+    {
+        msgIn.getProtocol(&protocolCurrent);
+        printf("Current protocol: %d\n", protocolCurrent);
+    }
     printf("GET PROTOCOL COMPLETE\n");
     getc(stdin);
 
     //Set Protocol
     printf("SET PROTOCOL\n");
-    rfid.setProtocol(&msgIn, protocol);
+    rfid.setProtocol(&msgIn, RFIDProtocolCodes::EPC_C1G2);
     msgIn.print();
     printf("SET PROTOCOL COMPLETE\n");
     getc(stdin);
@@ -61,12 +89,28 @@ int main()
     printf("SET SESSION COMPLETE\n");
     getc(stdin);
 
+    //Check read-point in source
+    printf("CHECK READ_POINT IN SOURCE\n");
+    rfid.checkReadPointInSource(&msgIn, &read_point, &source);
+    msgIn.print();
+    if(msgIn.success())
+    {
+        msgIn.isReadPointInSource(&currentInStatus);
+        printf("InStatus: %s\n", currentInStatus ? "true" : "false");
+    }
+    printf("CHECK READ_POINT IN SOURCE\n");
+    getc(stdin);
+
+
     //Get Power
     printf("GET POWER\n");
     rfid.getPower(&msgIn);
     msgIn.print();
-    msgIn.getPower(&powerCurrent);
-    printf("Current power: %d\n", powerCurrent);
+    if(msgIn.success())
+    {
+        msgIn.getPower(&powerCurrent);
+        printf("Current power: %d\n", powerCurrent);
+    }
     printf("GET POWER COMPLETE\n");
     getc(stdin);
 
@@ -81,16 +125,19 @@ int main()
     printf("GET POWER\n");
     rfid.getPower(&msgIn);
     msgIn.print();
-    msgIn.getPower(&powerCurrent);
-    printf("Current power: %d\n", powerCurrent);
+    if(msgIn.success())
+    {
+        msgIn.getPower(&powerCurrent);
+        printf("Current power: %d\n", powerCurrent);
+    }
     printf("GET POWER COMPLETE\n");
     getc(stdin);
 
-    //Source status
-    printf("GET SOURCE STATUS\n");
-    rfid.getSourceStatus(&msgIn, &source);
+    //Antenna status
+    printf("GET ANTENNA STATUS\n");
+    rfid.getReadPointStatus(&msgIn, &read_point);
     msgIn.print();
-    printf("GET SOURCE STATUS COMPLETE\n");
+    printf("GET ANTENNA STATUS COMPLETE\n");
     getc(stdin);
 
     printf("START INVENTORY\n");
@@ -112,9 +159,9 @@ int main()
 
         msgIn.getRFIDs(&founds);
 
-        for (RFID& rfid : founds)
+        for (RFID& tag : founds)
         {
-            rfid.print();
+            tag.print();
             k++;
         }
         auto duration = std::chrono::duration_cast<std::chrono::milliseconds>(stop - start);
