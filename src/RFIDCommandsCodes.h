@@ -87,6 +87,7 @@ public:
     static const unsigned short GET_READER_INFO                   = 0x009E;
     static const unsigned short SET_LBT_MODE                      = 0x009F;
     static const unsigned short GET_LBT_MODE                      = 0x00A0;
+    // static const unsigned short SET_RF_REGULATION                 = 0x00A1;  //UNTESTED
     static const unsigned short GET_RF_REGULATION                 = 0x00A2;
     static const unsigned short SET_RF_CHANNEL                    = 0x00A3;
     static const unsigned short GET_RF_CHANNEL                    = 0x00A4;

@@ -11,6 +11,7 @@
 
 #include "RFIDMessage.h"
 #include "RFIDInventoryFlags.h"
+#include "RFIDTagLockFlags.h"
 #include "RFIDMemoryBankCodes.h"
 #include "RFIDSourceConfigTypes.h"
 #include "SerialDevice.h"
@@ -54,10 +55,12 @@ public:
     int inventory(RFIDMessage *result, string *source, string *mask, unsigned short mask_pos, unsigned short flags);
     
     int readTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, unsigned short length);
-    int writeTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, string *password);
-    int setTagId(RFIDMessage *result, string *source, string *oldTagId, string *newTagId, string *password);
-    //TODO: lockTag
-    //TODO: killTag
+    int writeTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, unsigned int password);
+    int setTagId(RFIDMessage *result, string *source, string *oldTagId, string *newTagId, unsigned int password);
+    int setAccessPassword(RFIDMessage *result, string *source, string *tagId, unsigned int oldPassowrd, unsigned int newPassword);
+    int setKillPassword(RFIDMessage *result, string *source, string *tagId, unsigned int password, unsigned int newKillPassword);
+    int setTagLock(RFIDMessage *result, string *source, string *tagId, unsigned int flags, unsigned int password);
+    int killTag(RFIDMessage *result, string *source, string *tagId, unsigned int password);
 
     int checkReadPointInSource(RFIDMessage *result, string *read_point, string *source);
     int addReadPointToSource(RFIDMessage *result, string *read_point, string *source);

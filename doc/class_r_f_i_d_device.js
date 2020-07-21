@@ -14,13 +14,17 @@ var class_r_f_i_d_device =
     [ "getSourceTarget", "class_r_f_i_d_device.html#ae7dc3a086dc566b6f32368d6862b9a66", null ],
     [ "inventory", "class_r_f_i_d_device.html#aecca981cc3487646a62109287fd55b08", null ],
     [ "inventory", "class_r_f_i_d_device.html#aa747b2ce8f1b0289cdf856bf35d526e1", null ],
+    [ "killTag", "class_r_f_i_d_device.html#a59ca45bf88e0543e3c042f7a9e8b74d2", null ],
     [ "readTagMemory", "class_r_f_i_d_device.html#a2488e4b5626b35376a792d0d0806cc2b", null ],
     [ "removeReadPointFromSource", "class_r_f_i_d_device.html#ab707ba35f54c8fa9e7fa83edb1f5c7cc", null ],
+    [ "setAccessPassword", "class_r_f_i_d_device.html#af4ef2406313d061faf398865086da086", null ],
+    [ "setKillPassword", "class_r_f_i_d_device.html#a7bfd93f0d62066a14128830860755122", null ],
     [ "setPower", "class_r_f_i_d_device.html#a83f31689dae28e71154583053d408918", null ],
     [ "setProtocol", "class_r_f_i_d_device.html#a18b6821a407dd65b4750e2035c4dc79f", null ],
     [ "setSourceQ", "class_r_f_i_d_device.html#ac255d2f15168dc5761ca8c4da923a5d8", null ],
     [ "setSourceSession", "class_r_f_i_d_device.html#abdeb77ca64167916d24ed19c93625664", null ],
     [ "setSourceTarget", "class_r_f_i_d_device.html#a72b6fa015952ca9340c6bd7a38c2e3b0", null ],
-    [ "setTagId", "class_r_f_i_d_device.html#a1e0d5e168e3b1f313e4d52ab15b30820", null ],
-    [ "writeTagMemory", "class_r_f_i_d_device.html#aad39dafa22931397b7d4486b3d004fdb", null ]
+    [ "setTagId", "class_r_f_i_d_device.html#a490cacf1373f06fd49fc2a17df83d768", null ],
+    [ "setTagLock", "class_r_f_i_d_device.html#ac7b9839536d0eef8cc4686cfbee616f9", null ],
+    [ "writeTagMemory", "class_r_f_i_d_device.html#a1197c7d21ea359cee4a205d509a2ae6d", null ]
 ];

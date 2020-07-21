@@ -15,6 +15,7 @@ var annotated_dup =
     [ "RFIDResultCodes", "class_r_f_i_d_result_codes.html", null ],
     [ "RFIDSourceConfigCodes", "class_r_f_i_d_source_config_codes.html", null ],
     [ "RFIDSourceConfigTypes", "class_r_f_i_d_source_config_types.html", null ],
+    [ "RFIDTagLockFlags", "class_r_f_i_d_tag_lock_flags.html", null ],
     [ "RRFIDMemoryBankCodes", "class_r_r_f_i_d_memory_bank_codes.html", null ],
     [ "SerialDevice", "class_serial_device.html", "class_serial_device" ]
 ];

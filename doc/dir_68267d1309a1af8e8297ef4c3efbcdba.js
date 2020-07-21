@@ -15,5 +15,6 @@ var dir_68267d1309a1af8e8297ef4c3efbcdba =
     [ "RFIDResultCodes.h", "_r_f_i_d_result_codes_8h_source.html", null ],
     [ "RFIDSourceConfigCodes.h", "_r_f_i_d_source_config_codes_8h_source.html", null ],
     [ "RFIDSourceConfigTypes.h", "_r_f_i_d_source_config_types_8h_source.html", null ],
+    [ "RFIDTagLockFlags.h", "_r_f_i_d_tag_lock_flags_8h_source.html", null ],
     [ "SerialDevice.h", "_serial_device_8h_source.html", null ]
 ];

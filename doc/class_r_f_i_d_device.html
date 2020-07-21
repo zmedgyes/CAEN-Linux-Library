@@ -134,10 +134,18 @@ Public Member Functions</h2></td></tr>
 <tr class="separator:aa747b2ce8f1b0289cdf856bf35d526e1"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a2488e4b5626b35376a792d0d0806cc2b"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a2488e4b5626b35376a792d0d0806cc2b">readTagMemory</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, unsigned short length)</td></tr>
 <tr class="separator:a2488e4b5626b35376a792d0d0806cc2b"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:aad39dafa22931397b7d4486b3d004fdb"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#aad39dafa22931397b7d4486b3d004fdb">writeTagMemory</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, string *password)</td></tr>
-<tr class="separator:aad39dafa22931397b7d4486b3d004fdb"><td class="memSeparator" colspan="2">&#160;</td></tr>
-<tr class="memitem:a1e0d5e168e3b1f313e4d52ab15b30820"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a1e0d5e168e3b1f313e4d52ab15b30820">setTagId</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *oldTagId, string *newTagId, string *password)</td></tr>
-<tr class="separator:a1e0d5e168e3b1f313e4d52ab15b30820"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a1197c7d21ea359cee4a205d509a2ae6d"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a1197c7d21ea359cee4a205d509a2ae6d">writeTagMemory</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, unsigned int password)</td></tr>
+<tr class="separator:a1197c7d21ea359cee4a205d509a2ae6d"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a490cacf1373f06fd49fc2a17df83d768"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a490cacf1373f06fd49fc2a17df83d768">setTagId</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *oldTagId, string *newTagId, unsigned int password)</td></tr>
+<tr class="separator:a490cacf1373f06fd49fc2a17df83d768"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:af4ef2406313d061faf398865086da086"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#af4ef2406313d061faf398865086da086">setAccessPassword</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned int oldPassowrd, unsigned int newPassword)</td></tr>
+<tr class="separator:af4ef2406313d061faf398865086da086"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a7bfd93f0d62066a14128830860755122"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a7bfd93f0d62066a14128830860755122">setKillPassword</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned int password, unsigned int newKillPassword)</td></tr>
+<tr class="separator:a7bfd93f0d62066a14128830860755122"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:ac7b9839536d0eef8cc4686cfbee616f9"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#ac7b9839536d0eef8cc4686cfbee616f9">setTagLock</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned int flags, unsigned int password)</td></tr>
+<tr class="separator:ac7b9839536d0eef8cc4686cfbee616f9"><td class="memSeparator" colspan="2">&#160;</td></tr>
+<tr class="memitem:a59ca45bf88e0543e3c042f7a9e8b74d2"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a59ca45bf88e0543e3c042f7a9e8b74d2">killTag</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *source, string *tagId, unsigned int password)</td></tr>
+<tr class="separator:a59ca45bf88e0543e3c042f7a9e8b74d2"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a9918b99f426d33b4782c9bfb4918f1ce"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a9918b99f426d33b4782c9bfb4918f1ce">checkReadPointInSource</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *read_point, string *source)</td></tr>
 <tr class="separator:a9918b99f426d33b4782c9bfb4918f1ce"><td class="memSeparator" colspan="2">&#160;</td></tr>
 <tr class="memitem:a300232438bfcca784177b9c7751fb4a0"><td class="memItemLeft" align="right" valign="top">int&#160;</td><td class="memItemRight" valign="bottom"><a class="el" href="class_r_f_i_d_device.html#a300232438bfcca784177b9c7751fb4a0">addReadPointToSource</a> (<a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *result, string *read_point, string *source)</td></tr>
@@ -630,6 +638,57 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
+<a id="a59ca45bf88e0543e3c042f7a9e8b74d2"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a59ca45bf88e0543e3c042f7a9e8b74d2">&#9670;&nbsp;</a></span>killTag()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RFIDDevice::killTag </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>tagId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>password</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The method <a class="el" href="class_r_f_i_d_device.html#a59ca45bf88e0543e3c042f7a9e8b74d2">RFIDDevice::killTag</a> kills the target tag (permanently unable to inventory/read/write).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
+    <tr><td class="paramname">source</td><td>name of the source. </td></tr>
+    <tr><td class="paramname">tagId</td><td>the id of the target tag. </td></tr>
+    <tr><td class="paramname">password</td><td>the kill password of the tag. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a result code. 0 = OK. </dd></dl>
+
+</div>
+</div>
 <a id="a2488e4b5626b35376a792d0d0806cc2b"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a2488e4b5626b35376a792d0d0806cc2b">&#9670;&nbsp;</a></span>readTagMemory()</h2>
 
@@ -732,6 +791,122 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
     <tr><td class="paramname">read_point</td><td>the name of the read-point. </td></tr>
     <tr><td class="paramname">source</td><td>the name of the source. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a result code. 0 = OK. </dd></dl>
+
+</div>
+</div>
+<a id="af4ef2406313d061faf398865086da086"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#af4ef2406313d061faf398865086da086">&#9670;&nbsp;</a></span>setAccessPassword()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RFIDDevice::setAccessPassword </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>tagId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>oldPassowrd</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>newPassword</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The method <a class="el" href="class_r_f_i_d_device.html#af4ef2406313d061faf398865086da086">RFIDDevice::setAccessPassword</a> sets a new access password to the tag.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
+    <tr><td class="paramname">source</td><td>name of the source. </td></tr>
+    <tr><td class="paramname">tagId</td><td>the id of the target tag. </td></tr>
+    <tr><td class="paramname">oldPassword</td><td>the current access password of the tag. </td></tr>
+    <tr><td class="paramname">newPassword</td><td>the new access password of the tag. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a result code. 0 = OK. </dd></dl>
+
+</div>
+</div>
+<a id="a7bfd93f0d62066a14128830860755122"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a7bfd93f0d62066a14128830860755122">&#9670;&nbsp;</a></span>setKillPassword()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RFIDDevice::setKillPassword </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>tagId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>password</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>newKillPassword</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The method <a class="el" href="class_r_f_i_d_device.html#a7bfd93f0d62066a14128830860755122">RFIDDevice::setKillPassword</a> sets a new kill password to the tag memory.</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
+    <tr><td class="paramname">source</td><td>name of the source. </td></tr>
+    <tr><td class="paramname">tagId</td><td>the id of the target tag. </td></tr>
+    <tr><td class="paramname">password</td><td>the access password of the tag. </td></tr>
+    <tr><td class="paramname">newKillPassword</td><td>the new kill password of the tag. </td></tr>
   </table>
   </dd>
 </dl>
@@ -945,8 +1120,8 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="a1e0d5e168e3b1f313e4d52ab15b30820"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a1e0d5e168e3b1f313e4d52ab15b30820">&#9670;&nbsp;</a></span>setTagId()</h2>
+<a id="a490cacf1373f06fd49fc2a17df83d768"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a490cacf1373f06fd49fc2a17df83d768">&#9670;&nbsp;</a></span>setTagId()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -978,7 +1153,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">string *&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>password</em>&#160;</td>
         </tr>
         <tr>
@@ -988,14 +1163,14 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The method <a class="el" href="class_r_f_i_d_device.html#a1e0d5e168e3b1f313e4d52ab15b30820">RFIDDevice::setTagId</a> sets a new Id to the tag memory. </p><dl class="section note"><dt>Note</dt><dd>The tag memory may only be written in words (2byte), but the addressing and datalength need to be given in bytes. Make sure the length of the new tagId is even.</dd></dl>
+<p>The method <a class="el" href="class_r_f_i_d_device.html#a490cacf1373f06fd49fc2a17df83d768">RFIDDevice::setTagId</a> sets a new Id to the tag memory. </p><dl class="section note"><dt>Note</dt><dd>The tag memory may only be written in words (2byte), but the addressing and datalength need to be given in bytes. Make sure the length of the new tagId is even.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
     <tr><td class="paramname">source</td><td>name of the source. </td></tr>
     <tr><td class="paramname">oldTagId</td><td>the current id of the target tag. </td></tr>
     <tr><td class="paramname">newTagId</td><td>the new id of the target tag. </td></tr>
-    <tr><td class="paramname">password</td><td>the password of the tag </td></tr>
+    <tr><td class="paramname">password</td><td>the password of the tag. </td></tr>
   </table>
   </dd>
 </dl>
@@ -1003,8 +1178,66 @@ Public Member Functions</h2></td></tr>
 
 </div>
 </div>
-<a id="aad39dafa22931397b7d4486b3d004fdb"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#aad39dafa22931397b7d4486b3d004fdb">&#9670;&nbsp;</a></span>writeTagMemory()</h2>
+<a id="ac7b9839536d0eef8cc4686cfbee616f9"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#ac7b9839536d0eef8cc4686cfbee616f9">&#9670;&nbsp;</a></span>setTagLock()</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname">int RFIDDevice::setTagLock </td>
+          <td>(</td>
+          <td class="paramtype"><a class="el" href="class_r_f_i_d_message.html">RFIDMessage</a> *&#160;</td>
+          <td class="paramname"><em>result</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>source</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">string *&#160;</td>
+          <td class="paramname"><em>tagId</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>flags</em>, </td>
+        </tr>
+        <tr>
+          <td class="paramkey"></td>
+          <td></td>
+          <td class="paramtype">unsigned int&#160;</td>
+          <td class="paramname"><em>password</em>&#160;</td>
+        </tr>
+        <tr>
+          <td></td>
+          <td>)</td>
+          <td></td><td></td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+<p>The method <a class="el" href="class_r_f_i_d_device.html#ac7b9839536d0eef8cc4686cfbee616f9">RFIDDevice::setTagLock</a> sets a lock configuration of the tag (password and memory bank access).</p>
+<dl class="params"><dt>Parameters</dt><dd>
+  <table class="params">
+    <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
+    <tr><td class="paramname">source</td><td>name of the source. </td></tr>
+    <tr><td class="paramname">tagId</td><td>the id of the target tag. </td></tr>
+    <tr><td class="paramname">flags</td><td>the new lock configuration and configraion mask of the tag. </td></tr>
+    <tr><td class="paramname">password</td><td>the access password of the tag. </td></tr>
+  </table>
+  </dd>
+</dl>
+<dl class="section return"><dt>Returns</dt><dd>a result code. 0 = OK. </dd></dl>
+
+</div>
+</div>
+<a id="a1197c7d21ea359cee4a205d509a2ae6d"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a1197c7d21ea359cee4a205d509a2ae6d">&#9670;&nbsp;</a></span>writeTagMemory()</h2>
 
 <div class="memitem">
 <div class="memproto">
@@ -1048,7 +1281,7 @@ Public Member Functions</h2></td></tr>
         <tr>
           <td class="paramkey"></td>
           <td></td>
-          <td class="paramtype">string *&#160;</td>
+          <td class="paramtype">unsigned int&#160;</td>
           <td class="paramname"><em>password</em>&#160;</td>
         </tr>
         <tr>
@@ -1058,7 +1291,7 @@ Public Member Functions</h2></td></tr>
         </tr>
       </table>
 </div><div class="memdoc">
-<p>The method <a class="el" href="class_r_f_i_d_device.html#aad39dafa22931397b7d4486b3d004fdb">RFIDDevice::writeTagMemory</a> writes the tag memory. </p><dl class="section note"><dt>Note</dt><dd>The tag memory may only be written in words (2byte), but the addressing and datalength need to be given in bytes. Make sure both of the address and the length of the value are even.</dd></dl>
+<p>The method <a class="el" href="class_r_f_i_d_device.html#a1197c7d21ea359cee4a205d509a2ae6d">RFIDDevice::writeTagMemory</a> writes the tag memory. </p><dl class="section note"><dt>Note</dt><dd>The tag memory may only be written in words (2byte), but the addressing and datalength need to be given in bytes. Make sure both of the address and the length of the value are even.</dd></dl>
 <dl class="params"><dt>Parameters</dt><dd>
   <table class="params">
     <tr><td class="paramname">result</td><td>a message where the success status will be written into. </td></tr>
@@ -1067,7 +1300,7 @@ Public Member Functions</h2></td></tr>
     <tr><td class="paramname">memory_bank</td><td>the code of the target memory bank on the tag. </td></tr>
     <tr><td class="paramname">address</td><td>the start position in the memory bank, where the new data will be written into. </td></tr>
     <tr><td class="paramname">value</td><td>the new value to be set. </td></tr>
-    <tr><td class="paramname">password</td><td>the password of the tag </td></tr>
+    <tr><td class="paramname">password</td><td>the password of the tag. </td></tr>
   </table>
   </dd>
 </dl>

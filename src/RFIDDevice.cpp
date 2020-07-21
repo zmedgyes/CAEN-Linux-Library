@@ -410,10 +410,10 @@ int RFIDDevice::readTagMemory(RFIDMessage *result, string *source, string *tagId
  * \param memory_bank the code of the target memory bank on the tag.
  * \param address the start position in the memory bank, where the new data will be written into.
  * \param value the new value to be set.
- * \param password the password of the tag 
+ * \param password the password of the tag. 
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::writeTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, string *password)
+int RFIDDevice::writeTagMemory(RFIDMessage *result, string *source, string *tagId, unsigned short memory_bank, unsigned short address, string *value, unsigned int password)
 {
     RFIDMessage msgCommand(getNextId());
     msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::WRITE_TAG_DATA_EPC_C1G2);
@@ -424,7 +424,7 @@ int RFIDDevice::writeTagMemory(RFIDMessage *result, string *source, string *tagI
     msgCommand.addCommand(RFIDAttributeTypes::TAG_ADDRESS, address);
     msgCommand.addCommand(RFIDAttributeTypes::LENGTH,(unsigned short)value->size());
     msgCommand.addCommand(RFIDAttributeTypes::TAG_VALUE, (unsigned char *)value->data(), value->size());
-    msgCommand.addCommand(RFIDAttributeTypes::G2_PASSWORD, (unsigned char *)password->data(), password->size());
+    msgCommand.addCommand(RFIDAttributeTypes::G2_PASSWORD, password);
     return sendAndRecieve(&msgCommand, result);
 }
 
@@ -439,10 +439,10 @@ int RFIDDevice::writeTagMemory(RFIDMessage *result, string *source, string *tagI
  * \param source name of the source.
  * \param oldTagId the current id of the target tag.
  * \param newTagId the new id of the target tag.
- * \param password the password of the tag 
+ * \param password the password of the tag. 
  * \return a result code. 0 = OK.
  */
-int RFIDDevice::setTagId(RFIDMessage *result, string *source, string *oldTagId, string *newTagId, string *password)
+int RFIDDevice::setTagId(RFIDMessage *result, string *source, string *oldTagId, string *newTagId, unsigned int password)
 {
     int rc = writeTagMemory(result, source, oldTagId, RFIDMemoryBankCodes::EPC, 0x0004, newTagId, password);
     if(rc == 0 && result->success())
@@ -456,6 +456,92 @@ int RFIDDevice::setTagId(RFIDMessage *result, string *source, string *oldTagId, 
         rc = writeTagMemory(result, source, oldTagId, RFIDMemoryBankCodes::EPC, 0x0002, &cmd_value, password);
     }
     return rc;
+}
+
+/*!
+ * \fn RFIDDevice::setAccessPassword
+ *
+ * The method RFIDDevice::setAccessPassword sets a new access password to the tag.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param tagId the id of the target tag.
+ * \param oldPassword the current access password of the tag. 
+ * \param newPassword the new access password of the tag. 
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::setAccessPassword(RFIDMessage *result, string *source, string *tagId, unsigned int oldPassowrd, unsigned int newPassword)
+{
+    unsigned char new_password_buf[4];
+    RFIDMessage::shortToBuffer(newPassword, new_password_buf);
+    string new_password_str((char *)new_password_buf,4);
+    return writeTagMemory(result, source, tagId, RFIDMemoryBankCodes::RESERVED, 0x0004, &new_password_str, oldPassowrd);
+}
+
+/*!
+ * \fn RFIDDevice::setKillPassword
+ *
+ * The method RFIDDevice::setKillPassword sets a new kill password to the tag memory.
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param tagId the id of the target tag.
+ * \param password the access password of the tag. 
+ * \param newKillPassword the new kill password of the tag. 
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::setKillPassword(RFIDMessage *result, string *source, string *tagId, unsigned int password, unsigned int newKillPassword)
+{
+    unsigned char new_password_buf[4];
+    RFIDMessage::shortToBuffer(newKillPassword, new_password_buf);
+    string new_password_str((char *)new_password_buf, 4);
+    return writeTagMemory(result, source, tagId, RFIDMemoryBankCodes::RESERVED, 0x0000, &new_password_str, password);
+}
+
+/*!
+ * \fn RFIDDevice::setTagLock
+ *
+ * The method RFIDDevice::setTagLock sets a lock configuration of the tag (password and memory bank access).
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param tagId the id of the target tag.
+ * \param flags the new lock configuration and configraion mask of the tag. 
+ * \param password the access password of the tag.
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::setTagLock(RFIDMessage *result, string *source, string *tagId, unsigned int flags, unsigned int password)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::LOCK_TAG_EPC_C1G2);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID_LEN, (unsigned short)tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID, (unsigned char *)tagId->data(), tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::PAYLOAD, flags);
+    msgCommand.addCommand(RFIDAttributeTypes::G2_PASSWORD, password);
+    return sendAndRecieve(&msgCommand, result);
+}
+
+/*!
+ * \fn RFIDDevice::killTag
+ *
+ * The method RFIDDevice::killTag kills the target tag (permanently unable to inventory/read/write).
+ *
+ * \param result a message where the success status will be written into.
+ * \param source name of the source.
+ * \param tagId the id of the target tag.
+ * \param password the kill password of the tag. 
+ * \return a result code. 0 = OK.
+ */
+int RFIDDevice::killTag(RFIDMessage *result, string *source, string *tagId, unsigned int password)
+{
+    RFIDMessage msgCommand(getNextId());
+    msgCommand.addCommand(RFIDAttributeTypes::COMMAND_NAME, RFIDCommandsCodes::KILL_TAG_EPC_C1G2);
+    msgCommand.addCommand(RFIDAttributeTypes::SOURCE_NAME, (unsigned char *)source->c_str(), source->size() + 1);
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID_LEN, (unsigned short)tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::TAG_ID, (unsigned char *)tagId->data(), tagId->size());
+    msgCommand.addCommand(RFIDAttributeTypes::G2_PASSWORD, password);
+    return sendAndRecieve(&msgCommand, result);
 }
 
 /*!

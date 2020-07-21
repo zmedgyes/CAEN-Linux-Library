@@ -1,4 +1,22 @@
 var searchData=
 [
-  ['writetagmemory_145',['writeTagMemory',['../class_r_f_i_d_device.html#aad39dafa22931397b7d4486b3d004fdb',1,'RFIDDevice']]]
+  ['send_136',['send',['../class_serial_device.html#aafcdc12473ea61a02625c9784c2d94aa',1,'SerialDevice']]],
+  ['sendandreceive_137',['sendAndReceive',['../class_serial_device.html#ab8f5dc7c6148e6b70bafdf55fbcd1d05',1,'SerialDevice']]],
+  ['setaccesspassword_138',['setAccessPassword',['../class_r_f_i_d_device.html#af4ef2406313d061faf398865086da086',1,'RFIDDevice']]],
+  ['setkillpassword_139',['setKillPassword',['../class_r_f_i_d_device.html#a7bfd93f0d62066a14128830860755122',1,'RFIDDevice']]],
+  ['setpower_140',['setPower',['../class_r_f_i_d_device.html#a83f31689dae28e71154583053d408918',1,'RFIDDevice']]],
+  ['setprotocol_141',['setProtocol',['../class_r_f_i_d_device.html#a18b6821a407dd65b4750e2035c4dc79f',1,'RFIDDevice']]],
+  ['setreadpoint_142',['setReadPoint',['../class_r_f_i_d.html#afe3832446d9780d52d630fd1e303cc5b',1,'RFID']]],
+  ['setrssi_143',['setRSSI',['../class_r_f_i_d.html#a938cd66196ef39515929ec9edc2d2871',1,'RFID']]],
+  ['setsource_144',['setSource',['../class_r_f_i_d.html#afb2696c242673d2283df794bac92db5e',1,'RFID']]],
+  ['setsourceq_145',['setSourceQ',['../class_r_f_i_d_device.html#ac255d2f15168dc5761ca8c4da923a5d8',1,'RFIDDevice']]],
+  ['setsourcesession_146',['setSourceSession',['../class_r_f_i_d_device.html#abdeb77ca64167916d24ed19c93625664',1,'RFIDDevice']]],
+  ['setsourcetarget_147',['setSourceTarget',['../class_r_f_i_d_device.html#a72b6fa015952ca9340c6bd7a38c2e3b0',1,'RFIDDevice']]],
+  ['settagid_148',['setTagId',['../class_r_f_i_d_device.html#a490cacf1373f06fd49fc2a17df83d768',1,'RFIDDevice']]],
+  ['settaglock_149',['setTagLock',['../class_r_f_i_d_device.html#ac7b9839536d0eef8cc4686cfbee616f9',1,'RFIDDevice']]],
+  ['settid_150',['setTID',['../class_r_f_i_d.html#af146d13aff1d268155772a180902b125',1,'RFID']]],
+  ['settimestamp_151',['setTimestamp',['../class_r_f_i_d.html#a00904d687d5fd2bc03dadf7f524ae5c5',1,'RFID']]],
+  ['settype_152',['setType',['../class_r_f_i_d.html#a4ab3c23b220afbc5e10c4e9d2b2172b2',1,'RFID']]],
+  ['shorttobuffer_153',['shortToBuffer',['../class_r_f_i_d_message.html#a46c9baf57f34b8afe3e2d02ae9589a35',1,'RFIDMessage']]],
+  ['success_154',['success',['../class_r_f_i_d_message.html#ae257f0d7b382070055077b6fea581528',1,'RFIDMessage']]]
 ];

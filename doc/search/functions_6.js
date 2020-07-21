@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['longtobuffer_121',['longToBuffer',['../class_r_f_i_d_message.html#ac047eef67d71c6f023bfeea794596ac0',1,'RFIDMessage']]]
+  ['killtag_127',['killTag',['../class_r_f_i_d_device.html#a59ca45bf88e0543e3c042f7a9e8b74d2',1,'RFIDDevice']]]
 ];
